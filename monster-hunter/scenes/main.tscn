@@ -1,0 +1,95 @@
+[gd_scene load_steps=7 format=3 uid="uid://b0c64x0dgua2v"]
+
+[ext_resource type="PackedScene" uid="uid://b8luj06lh5dhv" path="res://scenes/environments/nexus/nexus_scene.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://dyrb1nuu4shig" path="res://scripts/ui/ui_handler.gd" id="3_jyhfs"]
+[ext_resource type="Script" uid="uid://cxoo2wlaplh8v" path="res://scripts/entities/player/controller_examples/scripts/controllers/controller_player.gd" id="3_tefeu"]
+[ext_resource type="Script" uid="uid://dg5kkua4kcy68" path="res://scripts/game_manager.gd" id="4_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://dp27wfbklu6ap" path="res://scenes/entities/player/player.tscn" id="4_tefeu"]
+[ext_resource type="Script" uid="uid://becqghg63mmpb" path="res://scripts/multiplayer/networks/network_manager.gd" id="5_tefeu"]
+
+[node name="Main" type="Node3D"]
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("4_tbgi4")
+
+[node name="NetworkManager" type="Node" parent="." node_paths=PackedStringArray("_players_spawn_node")]
+unique_name_in_owner = true
+script = ExtResource("5_tefeu")
+_players_spawn_node = NodePath("../Players")
+
+[node name="PlayerController" type="Node" parent="." node_paths=PackedStringArray("controlled_obj")]
+script = ExtResource("3_tefeu")
+controlled_obj = NodePath("../Players/Player")
+
+[node name="Level" type="Node" parent="."]
+
+[node name="NexusScene" parent="Level" instance=ExtResource("1_o5qli")]
+
+[node name="Players" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77222776, 1.3741729, 0.76452255)
+
+[node name="Player" parent="Players" instance=ExtResource("4_tefeu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.158243, 0)
+
+[node name="UIHandler" type="CanvasLayer" parent="."]
+script = ExtResource("3_jyhfs")
+
+[node name="UseSteamButton" type="Button" parent="UIHandler"]
+offset_left = 44.0
+offset_top = 37.0
+offset_right = 84.0
+offset_bottom = 60.0
+text = "Use Steam"
+
+[node name="SteamHUD" type="Control" parent="UIHandler"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = 165.0
+offset_top = 118.0
+offset_right = 292.0
+offset_bottom = 188.0
+
+[node name="Panel" type="Panel" parent="UIHandler/SteamHUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Options" type="VBoxContainer" parent="UIHandler/SteamHUD/Panel"]
+layout_mode = 0
+offset_right = 127.0
+offset_bottom = 66.0
+
+[node name="Button" type="Button" parent="UIHandler/SteamHUD/Panel/Options"]
+layout_mode = 2
+text = "Host P2P Game"
+
+[node name="Button2" type="Button" parent="UIHandler/SteamHUD/Panel/Options"]
+layout_mode = 2
+text = "List Lobbies"
+
+[node name="Lobbies" type="ScrollContainer" parent="UIHandler/SteamHUD"]
+layout_mode = 0
+offset_left = 141.0
+offset_top = 5.0
+offset_right = 268.0
+offset_bottom = 127.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UIHandler/SteamHUD/Lobbies"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="UIHandler/SteamHUD/Lobbies/VBoxContainer"]
+layout_mode = 2
+text = "Button"
+
+[node name="Label" type="Label" parent="UIHandler/SteamHUD/Lobbies/VBoxContainer"]
+layout_mode = 2
+text = "asdasd"
+
+[connection signal="pressed" from="UIHandler/UseSteamButton" to="GameManager" method="use_steam"]
+[connection signal="pressed" from="UIHandler/SteamHUD/Panel/Options/Button" to="GameManager" method="become_host"]
+[connection signal="pressed" from="UIHandler/SteamHUD/Panel/Options/Button2" to="GameManager" method="list_steam_lobbies"]

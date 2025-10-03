@@ -1,0 +1,732 @@
+classDiagram
+    %% ============================================
+    %% CORE GAME MANAGEMENT
+    %% ============================================
+    class GameManager {
+        -currentScene: Scene
+        -networkManager: NetworkManager
+        -playerManager: PlayerManager
+        -saveManager: SaveManager
+        +initialize()
+        +loadScene(sceneType: SceneType)
+        +saveGame()
+        +loadGame()
+    }
+
+    class NetworkManager {
+        -isHost: bool
+        -connectedPlayers: List~NetworkPlayer~
+        -maxPlayers: int
+        -currentSessionId: String
+        +hostSession()
+        +joinSession(sessionId: String)
+        +disconnectPlayer(playerId: String)
+        +syncGameState()
+        +sendPlayerAction(action: PlayerAction)
+    }
+
+    class SaveManager {
+        -savePath: String
+        -currentSaveSlot: int
+        +savePlayerData(player: Player)
+        +loadPlayerData(): PlayerData
+        +saveInventory(inventory: Inventory)
+        +loadInventory(): Inventory
+        +deleteSave(slot: int)
+    }
+
+    %% ============================================
+    %% SCENE MANAGEMENT
+    %% ============================================
+    class Scene {
+        <<abstract>>
+        -sceneId: String
+        -sceneName: String
+        +load()
+        +unload()
+        +update(delta: float)
+    }
+
+    class NexusScene {
+        -questBoard: QuestBoard
+        -craftingStation: CraftingStation
+        -playerSpawnPoint: Vector3
+        -npcs: List~NPC~
+        +showQuestBoard()
+        +openCraftingStation()
+        +interactWithNPC(npc: NPC)
+    }
+
+    class HuntingGroundScene {
+        -monster: Monster
+        -environment: Environment
+        -boundaries: Area3D
+        -spawnPoints: List~SpawnPoint~
+        -huntTimer: Timer
+        +spawnMonster(monsterType: MonsterType)
+        +startHunt()
+        +endHunt(result: HuntResult)
+        +checkBoundaries()
+    }
+
+    %% ============================================
+    %% PLAYER SYSTEM
+    %% ============================================
+    class Player {
+        -playerId: String
+        -playerName: String
+        -playerClass: PlayerClass
+        -stats: PlayerStats
+        -inventory: Inventory
+        -equipment: Equipment
+        -position: Vector3
+        -health: float
+        -stamina: float
+        -isAlive: bool
+        +move(direction: Vector3)
+        +attack(ability: Ability)
+        +dodge()
+        +useItem(item: ConsumableItem)
+        +takeDamage(damage: float, source: DamageSource)
+        +heal(amount: float)
+    }
+
+    class PlayerClass {
+        -classId: String
+        -className: String
+        -description: String
+        -baseStats: Stats
+        -abilities: List~Ability~
+        -passiveSkills: List~PassiveSkill~
+        -weaponType: WeaponType
+        +getAbility(index: int): Ability
+        +unlockAbility(ability: Ability)
+    }
+
+    class PlayerStats {
+        -maxHealth: float
+        -maxStamina: float
+        -attackPower: float
+        -defense: float
+        -critChance: float
+        -critDamage: float
+        -movementSpeed: float
+        -dodgeSpeed: float
+        +applyModifier(modifier: StatModifier)
+        +removeModifier(modifier: StatModifier)
+        +calculateFinalStats(): Stats
+    }
+
+    class NetworkPlayer {
+        -networkId: int
+        -ping: int
+        -isReady: bool
+        +syncTransform(transform: Transform3D)
+        +syncAnimation(animState: String)
+        +syncHealth(health: float)
+    }
+
+    %% ============================================
+    %% ABILITY SYSTEM
+    %% ============================================
+    class Ability {
+        <<abstract>>
+        -abilityId: String
+        -abilityName: String
+        -description: String
+        -cooldown: float
+        -currentCooldown: float
+        -manaCost: float
+        -castTime: float
+        -range: float
+        +canUse(): bool
+        +use(caster: Player, target: Entity)
+        +startCooldown()
+    }
+
+    class DamageAbility {
+        -baseDamage: float
+        -damageType: DamageType
+        -areaOfEffect: float
+        -knockbackForce: float
+        +calculateDamage(caster: Player): float
+        +applyDamage(target: Entity)
+    }
+
+    class BuffAbility {
+        -buffDuration: float
+        -buffEffect: StatusEffect
+        -targetType: TargetType
+        +applyBuff(target: Entity)
+    }
+
+    class HealAbility {
+        -healAmount: float
+        -healOverTime: bool
+        -duration: float
+        +heal(target: Player)
+    }
+
+    class PassiveSkill {
+        -skillId: String
+        -skillName: String
+        -description: String
+        -statModifiers: List~StatModifier~
+        -isActive: bool
+        +activate()
+        +deactivate()
+    }
+
+    class StatusEffect {
+        -effectId: String
+        -effectName: String
+        -duration: float
+        -stackable: bool
+        -currentStacks: int
+        -tickInterval: float
+        +apply(target: Entity)
+        +tick(delta: float)
+        +remove()
+    }
+
+    %% ============================================
+    %% MONSTER SYSTEM
+    %% ============================================
+    class Monster {
+        -monsterId: String
+        -monsterName: String
+        -monsterType: MonsterType
+        -level: int
+        -health: float
+        -maxHealth: float
+        -stats: MonsterStats
+        -currentState: MonsterState
+        -aiController: MonsterAI
+        -weakPoints: List~WeakPoint~
+        -lootTable: LootTable
+        -position: Vector3
+        -isEnraged: bool
+        +takeDamage(damage: float, hitLocation: Vector3)
+        +attack(target: Player)
+        +performSpecialAttack()
+        +enterEnragedMode()
+        +die()
+        +dropLoot(): List~ItemDrop~
+    }
+
+    class MonsterStats {
+        -attackPower: float
+        -defense: float
+        -movementSpeed: float
+        -enrageThreshold: float
+        -resistances: Dictionary~DamageType, float~
+        +getResistance(type: DamageType): float
+    }
+
+    class MonsterAI {
+        -currentBehavior: Behavior
+        -aggroRange: float
+        -currentTarget: Player
+        -patrolPoints: List~Vector3~
+        -attackPatterns: List~AttackPattern~
+        +update(delta: float)
+        +selectTarget(): Player
+        +chooseAttack(): AttackPattern
+        +evaluateThreat(): float
+    }
+
+    class WeakPoint {
+        -partName: String
+        -position: Vector3
+        -damageMultiplier: float
+        -currentHealth: float
+        -isBroken: bool
+        -breakReward: List~Item~
+        +takeDamage(damage: float)
+        +breakPart()
+    }
+
+    class AttackPattern {
+        -patternId: String
+        -patternName: String
+        -damage: float
+        -telegraphTime: float
+        -executionTime: float
+        -cooldown: float
+        -hitboxes: List~Hitbox~
+        +execute(monster: Monster)
+        +showTelegraph()
+    }
+
+    class MonsterState {
+        <<enumeration>>
+        IDLE
+        PATROL
+        CHASE
+        ATTACK
+        ENRAGED
+        STUNNED
+        FLEEING
+        DYING
+    }
+
+    %% ============================================
+    %% INVENTORY SYSTEM
+    %% ============================================
+    class Inventory {
+        -inventoryId: String
+        -maxSlots: int
+        -itemStacks: List~ItemStack~
+        -currency: int
+        +addItem(item: Item, quantity: int): bool
+        +removeItem(item: Item, quantity: int): bool
+        +hasItem(item: Item, quantity: int): bool
+        +getItemStack(index: int): ItemStack
+        +sortInventory()
+        +getWeight(): float
+    }
+
+    class ItemStack {
+        -item: Item
+        -quantity: int
+        -maxStackSize: int
+        +addQuantity(amount: int): bool
+        +removeQuantity(amount: int): bool
+        +isFull(): bool
+        +isEmpty(): bool
+        +split(amount: int): ItemStack
+    }
+
+    class Item {
+        <<abstract>>
+        -itemId: String
+        -itemName: String
+        -description: String
+        -iconPath: String
+        -rarity: ItemRarity
+        -weight: float
+        -sellValue: int
+        -maxStackSize: int
+        +use(user: Player)
+        +canStack(): bool
+    }
+
+    class ConsumableItem {
+        -effectType: EffectType
+        -effectValue: float
+        -duration: float
+        -cooldown: float
+        +consume(player: Player)
+    }
+
+    class MaterialItem {
+        -materialType: MaterialType
+        -monsterSource: String
+        -craftingCategory: String
+        +canCraft(): bool
+    }
+
+    class EquipmentItem {
+        <<abstract>>
+        -equipSlot: EquipSlot
+        -requiredLevel: int
+        -stats: Stats
+        -sockets: List~Socket~
+        +equip(player: Player)
+        +unequip(player: Player)
+        +upgrade(materials: List~MaterialItem~): bool
+    }
+
+    class WeaponItem {
+        -weaponType: WeaponType
+        -baseDamage: float
+        -attackSpeed: float
+        -critBonus: float
+        -elementType: ElementType
+        -elementDamage: float
+        -upgradeLevel: int
+        -maxUpgradeLevel: int
+        +attack(): float
+        +calculateDPS(): float
+    }
+
+    class ArmorItem {
+        -armorType: ArmorType
+        -defenseValue: float
+        -elementResistances: Dictionary~ElementType, float~
+        -upgradeLevel: int
+        -maxUpgradeLevel: int
+        -setBonus: SetBonus
+        +getDefense(): float
+        +getResistance(element: ElementType): float
+    }
+
+    class AccessoryItem {
+        -accessoryType: AccessoryType
+        -bonusEffects: List~StatusEffect~
+        +applyEffects(player: Player)
+    }
+
+    class ItemRarity {
+        <<enumeration>>
+        COMMON
+        UNCOMMON
+        RARE
+        EPIC
+        LEGENDARY
+    }
+
+    %% ============================================
+    %% EQUIPMENT SYSTEM
+    %% ============================================
+    class Equipment {
+        -weapon: WeaponItem
+        -helmet: ArmorItem
+        -chestplate: ArmorItem
+        -gauntlets: ArmorItem
+        -legarmor: ArmorItem
+        -boots: ArmorItem
+        -accessories: List~AccessoryItem~
+        -maxAccessories: int
+        +equipItem(item: EquipmentItem, slot: EquipSlot): bool
+        +unequipItem(slot: EquipSlot): EquipmentItem
+        +getTotalStats(): Stats
+        +getSetBonuses(): List~SetBonus~
+    }
+
+    class Socket {
+        -socketType: SocketType
+        -insertedGem: Gem
+        -isEmpty: bool
+        +insertGem(gem: Gem): bool
+        +removeGem(): Gem
+    }
+
+    class Gem {
+        -gemId: String
+        -gemName: String
+        -gemType: GemType
+        -statBonus: StatModifier
+        -rarity: ItemRarity
+        +apply(equipment: EquipmentItem)
+    }
+
+    class SetBonus {
+        -setName: String
+        -requiredPieces: int
+        -bonusEffects: List~StatModifier~
+        +isActive(equipment: Equipment): bool
+        +applyBonus(player: Player)
+    }
+
+    class StatModifier {
+        -modifierId: String
+        -statType: StatType
+        -modifierType: ModifierType
+        -value: float
+        +apply(baseValue: float): float
+    }
+
+    %% ============================================
+    %% QUEST/MISSION SYSTEM
+    %% ============================================
+    class QuestBoard {
+        -availableQuests: List~Quest~
+        -activeQuests: List~Quest~
+        -completedQuests: List~Quest~
+        +showQuests()
+        +acceptQuest(quest: Quest)
+        +abandonQuest(quest: Quest)
+        +completeQuest(quest: Quest)
+    }
+
+    class Quest {
+        -questId: String
+        -questName: String
+        -description: String
+        -questType: QuestType
+        -difficulty: int
+        -objectives: List~QuestObjective~
+        -rewards: QuestReward
+        -timeLimit: float
+        -requiredRank: int
+        -isCompleted: bool
+        +start()
+        +checkCompletion(): bool
+        +fail()
+        +giveRewards(player: Player)
+    }
+
+    class QuestObjective {
+        -objectiveId: String
+        -description: String
+        -objectiveType: ObjectiveType
+        -targetId: String
+        -currentProgress: int
+        -requiredProgress: int
+        -isCompleted: bool
+        +updateProgress(amount: int)
+        +checkCompletion(): bool
+    }
+
+    class QuestReward {
+        -experience: int
+        -currency: int
+        -items: List~ItemReward~
+        -unlocks: List~Unlock~
+        +grantRewards(player: Player)
+    }
+
+    class ItemReward {
+        -item: Item
+        -quantity: int
+        -guaranteedDrop: bool
+        -dropChance: float
+    }
+
+    class HuntQuest {
+        -targetMonster: MonsterType
+        -huntingGround: HuntingGroundScene
+        -failConditions: List~FailCondition~
+        +startHunt()
+        +endHunt(success: bool)
+    }
+
+    %% ============================================
+    %% CRAFTING SYSTEM
+    %% ============================================
+    class CraftingStation {
+        -stationType: StationType
+        -availableRecipes: List~CraftingRecipe~
+        -unlockedRecipes: List~CraftingRecipe~
+        +showRecipes()
+        +craftItem(recipe: CraftingRecipe, player: Player): bool
+        +upgradeEquipment(item: EquipmentItem, player: Player): bool
+    }
+
+    class CraftingRecipe {
+        -recipeId: String
+        -recipeName: String
+        -resultItem: Item
+        -resultQuantity: int
+        -requiredMaterials: List~MaterialRequirement~
+        -craftingCost: int
+        -requiredRank: int
+        -isUnlocked: bool
+        +canCraft(inventory: Inventory): bool
+        +craft(inventory: Inventory): Item
+    }
+
+    class MaterialRequirement {
+        -material: MaterialItem
+        -quantity: int
+        +isFulfilled(inventory: Inventory): bool
+    }
+
+    class UpgradeRecipe {
+        -upgradeLevel: int
+        -requiredMaterials: List~MaterialRequirement~
+        -upgradeCost: int
+        -statIncrease: Stats
+        +canUpgrade(item: EquipmentItem, inventory: Inventory): bool
+        +upgrade(item: EquipmentItem): EquipmentItem
+    }
+
+    %% ============================================
+    %% LOOT SYSTEM
+    %% ============================================
+    class LootTable {
+        -tableId: String
+        -lootEntries: List~LootEntry~
+        -guaranteedDrops: List~LootEntry~
+        +rollLoot(): List~ItemDrop~
+        +addEntry(entry: LootEntry)
+    }
+
+    class LootEntry {
+        -item: Item
+        -dropChance: float
+        -minQuantity: int
+        -maxQuantity: int
+        -requiresPartBreak: bool
+        -partName: String
+        +roll(): ItemDrop
+    }
+
+    class ItemDrop {
+        -item: Item
+        -quantity: int
+        -position: Vector3
+        -pickupRadius: float
+        +pickup(player: Player)
+        +despawn()
+    }
+
+    %% ============================================
+    %% UTILITY CLASSES
+    %% ============================================
+    class Stats {
+        -health: float
+        -stamina: float
+        -attack: float
+        -defense: float
+        -critChance: float
+        -critDamage: float
+        -speed: float
+        +add(other: Stats): Stats
+        +multiply(factor: float): Stats
+    }
+
+    class DamageSource {
+        -sourceEntity: Entity
+        -damageType: DamageType
+        -elementType: ElementType
+        -isCritical: bool
+    }
+
+    class Entity {
+        <<abstract>>
+        -entityId: String
+        -position: Vector3
+        -rotation: Vector3
+        -isActive: bool
+        +update(delta: float)
+        +destroy()
+    }
+
+    class NPC {
+        -npcId: String
+        -npcName: String
+        -dialogues: List~Dialogue~
+        -function: NPCFunction
+        +interact(player: Player)
+        +showDialogue()
+    }
+
+    %% ============================================
+    %% ENUMERATIONS
+    %% ============================================
+    class DamageType {
+        <<enumeration>>
+        PHYSICAL
+        FIRE
+        ICE
+        THUNDER
+        WATER
+        DRAGON
+    }
+
+    class EquipSlot {
+        <<enumeration>>
+        WEAPON
+        HELMET
+        CHEST
+        GAUNTLETS
+        LEGS
+        BOOTS
+        ACCESSORY_1
+        ACCESSORY_2
+        ACCESSORY_3
+    }
+
+    class WeaponType {
+        <<enumeration>>
+        SWORD
+        GREATSWORD
+        HAMMER
+        BOW
+        DUAL_BLADES
+        LANCE
+        STAFF
+    }
+
+    %% ============================================
+    %% RELATIONSHIPS
+    %% ============================================
+    GameManager --> NetworkManager
+    GameManager --> SaveManager
+    GameManager --> Scene
+    
+    Scene <|-- NexusScene
+    Scene <|-- HuntingGroundScene
+    
+    NexusScene --> QuestBoard
+    NexusScene --> CraftingStation
+    NexusScene --> NPC
+    
+    HuntingGroundScene --> Monster
+    
+    Player --> PlayerClass
+    Player --> PlayerStats
+    Player --> Inventory
+    Player --> Equipment
+    Player <|-- NetworkPlayer
+    
+    PlayerClass --> Ability
+    PlayerClass --> PassiveSkill
+    
+    Ability <|-- DamageAbility
+    Ability <|-- BuffAbility
+    Ability <|-- HealAbility
+    
+    BuffAbility --> StatusEffect
+    PassiveSkill --> StatModifier
+    
+    Monster --> MonsterStats
+    Monster --> MonsterAI
+    Monster --> WeakPoint
+    Monster --> LootTable
+    Monster --> MonsterState
+    
+    MonsterAI --> AttackPattern
+    
+    Inventory --> ItemStack
+    ItemStack --> Item
+    
+    Item <|-- ConsumableItem
+    Item <|-- MaterialItem
+    Item <|-- EquipmentItem
+    Item --> ItemRarity
+    
+    EquipmentItem <|-- WeaponItem
+    EquipmentItem <|-- ArmorItem
+    EquipmentItem <|-- AccessoryItem
+    EquipmentItem --> Socket
+    
+    Equipment --> WeaponItem
+    Equipment --> ArmorItem
+    Equipment --> AccessoryItem
+    Equipment --> SetBonus
+    
+    Socket --> Gem
+    Gem --> StatModifier
+    SetBonus --> StatModifier
+    
+    QuestBoard --> Quest
+    Quest --> QuestObjective
+    Quest --> QuestReward
+    Quest <|-- HuntQuest
+    
+    QuestReward --> ItemReward
+    ItemReward --> Item
+    
+    CraftingStation --> CraftingRecipe
+    CraftingRecipe --> MaterialRequirement
+    CraftingRecipe --> UpgradeRecipe
+    MaterialRequirement --> MaterialItem
+    
+    LootTable --> LootEntry
+    LootEntry --> Item
+    LootEntry --> ItemDrop
+    ItemDrop --> Item
+    
+    Player --|> Entity
+    Monster --|> Entity
+    NPC --|> Entity
+    
+    DamageSource --> Entity
+    DamageSource --> DamageType
+    
+    PlayerStats --> Stats
+    MonsterStats --> Stats
+    Equipment --> Stats
