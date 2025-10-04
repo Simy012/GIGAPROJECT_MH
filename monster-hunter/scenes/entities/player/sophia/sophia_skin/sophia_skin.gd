@@ -1,5 +1,7 @@
 class_name SophiaSkin extends Node3D
 
+
+
 @onready var animation_tree = %AnimationTree
 @onready var state_machine : AnimationNodeStateMachinePlayback = animation_tree.get("parameters/StateMachine/playback")
 @onready var move_tilt_path : String = "parameters/StateMachine/Move/tilt/add_amount"
@@ -52,3 +54,17 @@ func edge_grab():
 
 func wall_slide():
 	state_machine.travel("WallSlide")
+
+
+func animate(action_id: StringName):
+	match action_id:
+		"MOVE":
+			move()
+		"RUN":
+			move()
+		"JUMP":
+			jump()
+		"IDLE":
+			idle()
+		_:
+			idle()

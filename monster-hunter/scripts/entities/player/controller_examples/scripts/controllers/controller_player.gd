@@ -47,7 +47,7 @@ func _process(delta: float) -> void:
 	
 	var input: Vector2 = Input.get_vector("move_left", "move_right", "move_forwards", "move_backwards").rotated(-_cam_pivot.rotation.y)
 	_input_tracking["move"] = Vector3(input.x, 0.0, input.y)
-	evaluate_input("move")
+	evaluate_input("move", delta)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not controlled_obj:
@@ -70,13 +70,13 @@ func _unhandled_input(event: InputEvent) -> void:
 					is_double = true
 					_last_input = ""
 					_last_input_window = 0.0
-			evaluate_input(check, is_double)
+			evaluate_input(check,0.0, is_double)
 
 
-func evaluate_input(key: String, double_tap: bool = false) -> void:
+func evaluate_input(key: String,delta: float, double_tap: bool = false) -> void:
 	match key:
 		"move":
-			_action_container.play_action("MOVE", {"input_direction":_input_tracking["move"], "aim_direction":_cam_pivot.get_cam_forward()})
+			_action_container.play_action("MOVE", {"input_direction":_input_tracking["move"], "aim_direction":_cam_pivot.get_cam_forward(), "delta":delta})
 		"run":
 			if _input_tracking[key]:
 				_action_container.play_action("RUN")
@@ -95,7 +95,7 @@ func evaluate_input(key: String, double_tap: bool = false) -> void:
 
 func evaluate_all_input() -> void:
 	for action in _input_tracking.keys():
-		evaluate_input(action)
+		evaluate_input(action,0)
 
 
 func _on_action_exit(_action_id: StringName) -> void:

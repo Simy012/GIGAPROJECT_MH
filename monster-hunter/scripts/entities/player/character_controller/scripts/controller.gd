@@ -19,5 +19,4 @@ func _on_controlled_obj_change():
 
 
 func player_added(player: Player):
-	if not controlled_obj:
-		controlled_obj = player 
+	controlled_obj = player 

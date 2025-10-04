@@ -50,23 +50,28 @@ margin = 0.2
 [node name="Camera3D" type="Camera3D" parent="CamPivot/SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
 
-[node name="ActionContainer" type="Node" parent="."]
+[node name="ActionContainer" type="Node" parent="." node_paths=PackedStringArray("model")]
 script = ExtResource("5_uncef")
+model = NodePath("../SophiaSkin")
 _config_profiles = SubResource("Resource_g44xp")
 _starting_config = &"grounded"
 _disable_config_warnings = true
 
-[node name="Move" type="Node" parent="ActionContainer"]
+[node name="Move" type="Node" parent="ActionContainer" node_paths=PackedStringArray("model")]
 script = ExtResource("7_jykmq")
+model = NodePath("../../SophiaSkin")
 
-[node name="Jump" type="Node" parent="ActionContainer"]
+[node name="Jump" type="Node" parent="ActionContainer" node_paths=PackedStringArray("model")]
 script = ExtResource("8_hrie1")
+model = NodePath("../../SophiaSkin")
 
-[node name="ToggleMovementState" type="Node" parent="ActionContainer"]
+[node name="ToggleMovementState" type="Node" parent="ActionContainer" node_paths=PackedStringArray("model")]
 script = ExtResource("9_7o1e0")
+model = NodePath("../../SophiaSkin")
 
-[node name="Fly" type="Node" parent="ActionContainer"]
+[node name="Fly" type="Node" parent="ActionContainer" node_paths=PackedStringArray("model")]
 script = ExtResource("10_0i38a")
+model = NodePath("../../SophiaSkin")
 
 [node name="MovementManager" type="Node" parent="." node_paths=PackedStringArray("active_state")]
 script = ExtResource("11_gu2ug")

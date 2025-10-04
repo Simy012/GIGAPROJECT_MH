@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="MonsterHunter"
-run/main_scene="uid://b0c64x0dgua2v"
+run/main_scene="uid://dmyf4mykgk185"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -20,6 +20,9 @@ config/icon="res://icon.svg"
 EventHandler="*res://scripts/autoload/event_handler.gd"
 MultiplayerManager="*res://scripts/multiplayer/multiplayer_manager.gd"
 SteamManager="*res://scripts/multiplayer/steam/steam_manager.gd"
+SettingsManager="*res://scripts/autoload/settings_manager.gd"
+GameManager="*res://scripts/autoload/game_manager.gd"
+SceneTransition="*res://scripts/autoload/scene_transition/SceneTransition.tscn"
 
 [editor_plugins]
 

@@ -7,6 +7,8 @@ class_name ActionContainer
 # manages actions by their ACTION_ID
 # can utilize an ActionContainerConfig to allow swapping actions at runtime
 
+@export var model: Node3D # Skin from the player for animations
+
 signal action_enter(action_id: StringName)
 signal action_exit(action_id: StringName)
 
@@ -155,6 +157,7 @@ func stop_action(action_id: StringName) -> void:
 		_active_action_dict[action_id].stop()
 	elif action_id == _active_action:
 		_active_action_dict[_active_action].stop()
+
 
 
 func _validate_config() -> void:

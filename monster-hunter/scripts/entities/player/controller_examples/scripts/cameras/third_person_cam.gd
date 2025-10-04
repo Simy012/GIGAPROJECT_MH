@@ -30,6 +30,7 @@ func _physics_process(_delta: float) -> void:
 	smooth_move_y(0.07) # 0.7 just feels good
 
 
+
 func change_fov(setting: FOV) -> void:
 	match setting:
 		FOV.NORMAL:

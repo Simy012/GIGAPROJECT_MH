@@ -6,6 +6,8 @@ class_name ActionNode
 ## Defines an action that the object can perform during gameplay
 ## EX: jump, run, attack, activate ability, swap weapon
 
+@export var model: Node3D # SKin of the Player for animations
+
 # WARNING: actions must not enter and exit in the same frame
 signal enter(action_id: StringName)
 signal exit(action_id: StringName)

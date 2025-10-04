@@ -1,0 +1,221 @@
+[gd_scene load_steps=2 format=3 uid="uid://x7bmwt7sy4ra"]
+
+[ext_resource type="Script" uid="uid://c3sdiej6dtpmb" path="res://scripts/ui/menus/settings_menu.gd" id="1_vmmfm"]
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vmmfm")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.3647059, 0.5921569, 0.5176471, 1)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitelLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Options"
+horizontal_alignment = 1
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
+layout_mode = 2
+tab_alignment = 1
+current_tab = 0
+
+[node name="Video" type="TabBar" parent="VBoxContainer/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VideoSetings" type="VBoxContainer" parent="VBoxContainer/TabContainer/Video"]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 9.0
+offset_right = 316.0
+offset_bottom = 142.0
+theme_override_constants/separation = 10
+
+[node name="Fullscreen" type="HBoxContainer" parent="VBoxContainer/TabContainer/Video/VideoSetings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Video/VideoSetings/Fullscreen"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="FullscreenCheck" type="CheckBox" parent="VBoxContainer/TabContainer/Video/VideoSetings/Fullscreen"]
+layout_mode = 2
+
+[node name="Vsync" type="HBoxContainer" parent="VBoxContainer/TabContainer/Video/VideoSetings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Video/VideoSetings/Vsync"]
+layout_mode = 2
+text = "Vsync"
+
+[node name="VsyncCheck" type="CheckBox" parent="VBoxContainer/TabContainer/Video/VideoSetings/Vsync"]
+layout_mode = 2
+
+[node name="ResolutionOption" type="HBoxContainer" parent="VBoxContainer/TabContainer/Video/VideoSetings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Video/VideoSetings/ResolutionOption"]
+layout_mode = 2
+text = "Resolution Option"
+
+[node name="ResolutionButton" type="OptionButton" parent="VBoxContainer/TabContainer/Video/VideoSetings/ResolutionOption"]
+layout_mode = 2
+
+[node name="QualtityOption" type="HBoxContainer" parent="VBoxContainer/TabContainer/Video/VideoSetings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Video/VideoSetings/QualtityOption"]
+layout_mode = 2
+text = "Quality"
+
+[node name="QualityButton" type="OptionButton" parent="VBoxContainer/TabContainer/Video/VideoSetings/QualtityOption"]
+layout_mode = 2
+
+[node name="Brightness" type="HBoxContainer" parent="VBoxContainer/TabContainer/Video/VideoSetings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Video/VideoSetings/Brightness"]
+layout_mode = 2
+text = "Brightness"
+
+[node name="BrightnessSlider" type="HSlider" parent="VBoxContainer/TabContainer/Video/VideoSetings/Brightness"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Audio" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="AudioSettings" type="VBoxContainer" parent="VBoxContainer/TabContainer/Audio"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 10
+
+[node name="MasterSlider" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio/AudioSettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Audio/AudioSettings/MasterSlider"]
+layout_mode = 2
+text = "Master"
+
+[node name="MasterSlider" type="HSlider" parent="VBoxContainer/TabContainer/Audio/AudioSettings/MasterSlider"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="MusicSlider" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio/AudioSettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Audio/AudioSettings/MusicSlider"]
+layout_mode = 2
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="VBoxContainer/TabContainer/Audio/AudioSettings/MusicSlider"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="SFXSlider" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio/AudioSettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Audio/AudioSettings/SFXSlider"]
+layout_mode = 2
+text = "SFX"
+
+[node name="SFXSlider" type="HSlider" parent="VBoxContainer/TabContainer/Audio/AudioSettings/SFXSlider"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Gameplay" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="GameplaySettings" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gameplay"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MouseSensitivity" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gameplay/GameplaySettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gameplay/GameplaySettings/MouseSensitivity"]
+layout_mode = 2
+text = "Mouse Sensitivity"
+
+[node name="MouseSensitivitySlider" type="HSlider" parent="VBoxContainer/TabContainer/Gameplay/GameplaySettings/MouseSensitivity"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="CameraShakeCheck" type="HBoxContainer" parent="VBoxContainer/TabContainer/Gameplay/GameplaySettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gameplay/GameplaySettings/CameraShakeCheck"]
+layout_mode = 2
+text = "CameraShake"
+
+[node name="CameraShakeCheck" type="CheckBox" parent="VBoxContainer/TabContainer/Gameplay/GameplaySettings/CameraShakeCheck"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -91.0
+offset_top = -53.0
+offset_right = 97.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="ApplyButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Apply"
+
+[node name="ResetButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Reset"
+
+[node name="BackButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Back
+"

@@ -28,6 +28,9 @@ func can_play() -> bool:
 
 func play(_params: Dictionary = {}) -> void:
 	_movement_class.add_impulse(Vector3.UP, JUMP_STRENGTH)
+	
+	if model:
+		model.animate("JUMP")
 	super.play()
 	# actions must not enter and exit in the same frame
 	await get_tree().process_frame # delay prevents inf loop within controller and action container
