@@ -56,10 +56,8 @@ func start_multiplayer_host():
 	# Input freigeben
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
-	# Steam Network starten (jetzt existiert die Scene)
-	if has_node("/root/SteamNetwork"):
-		get_node("/root/SteamNetwork").become_host()
-		print("Steam Network: Host started!")
+	NetworkManager.become_host()
+	print("Steam Network: Host started!")
 
 
 func start_multiplayer_client(lobby_id: int):
@@ -81,9 +79,8 @@ func start_multiplayer_client(lobby_id: int):
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
 	# Steam Network joinen (jetzt existiert die Scene)
-	if has_node("/root/SteamNetwork"):
-		get_node("/root/SteamNetwork").join_as_client(lobby_id)
-		print("Steam Network: Joined lobby %s!" % lobby_id)
+	NetworkManager.join_as_client(lobby_id)
+	print("Steam Network: Joined lobby %s!" % lobby_id)
 	
 	
 
@@ -92,7 +89,7 @@ func return_to_main_menu():
 	load_scene(MAIN_MENU_SCENE)
 
 func load_scene(scene_path: String):
-	get_tree().change_scene_to_file(scene_path)
+	SceneTransition.change_scene(scene_path)
 
 func quit_game():
 	get_tree().quit()
@@ -107,28 +104,20 @@ func resume_game():
 
 
 func remove_singleplayer_character():
-	"""
-	Entfernt den Singleplayer Character wenn in Multiplayer gewechselt wird
-	"""
 	print("Removing single player character...")
 	
 	# Warte einen Frame damit Scene vollständig geladen ist
 	await get_tree().process_frame
 	
-	var current_scene = get_tree().current_scene
-	if not current_scene:
-		return
+	var player_node = NetworkManager.players_spawn_node
 	
-	# Suche nach Players Node
-	if not current_scene.has_node("Players"):
-		print("No Players node found")
+	if not player_node:
+		print("No players Found")
 		return
-	
-	var players_node = current_scene.get_node("Players")
 	
 	# Entferne ersten Player (Singleplayer Character)
-	if players_node.get_child_count() > 0:
-		var player_to_remove = players_node.get_child(0)
+	if player_node.get_child_count() > 0:
+		var player_to_remove = player_node.get_child(0)
 		print("Removing player: %s" % player_to_remove.name)
 		player_to_remove.queue_free()
 		await player_to_remove.tree_exited

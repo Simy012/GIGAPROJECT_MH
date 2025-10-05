@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dp27wfbklu6ap"]
+[gd_scene load_steps=17 format=3 uid="uid://dp27wfbklu6ap"]
 
 [ext_resource type="Script" uid="uid://b48bhegka3thj" path="res://scripts/entities/player/player.gd" id="1_7tlpx"]
 [ext_resource type="PackedScene" uid="uid://prh35jb6tjtd" path="res://scenes/entities/player/sophia/sophia_skin/sophia_skin.tscn" id="2_58kc7"]
@@ -25,6 +25,14 @@ config_dict = Dictionary[StringName, Array]({
 &"grounded": [&"Move", &"Jump", &"ToggleMovementState", &"Dash"]
 })
 metadata/_custom_type_script = "uid://0s27mb2d6unm"
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_j0oqr"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" groups=["ControllableCharacter"]]
 script = ExtResource("1_7tlpx")
@@ -82,3 +90,6 @@ script = ExtResource("12_s87xn")
 
 [node name="FlyingMovement" type="Node" parent="MovementManager"]
 script = ExtResource("13_jtwwv")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_j0oqr")

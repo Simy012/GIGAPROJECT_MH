@@ -13,7 +13,7 @@ extends Control
 @onready var close_mp_button = $MultiplayerPanel/VBoxContainer/CloseButton
 
 
-const MAIN_MENU = "res://scenes/menus/main_menu.tscn"
+const MAIN_MENU = "res://scenes/ui/menus/main_menu.tscn"
 
 func _ready():
 	# Main buttons
@@ -31,8 +31,7 @@ func _ready():
 	multiplayer_panel.visible = false
 	
 	# Connect Steam signals
-	if has_node("/root/SteamNetwork"):
-		Steam.lobby_match_list.connect(_on_lobby_list_received)
+	Steam.lobby_match_list.connect(_on_lobby_list_received)
 
 func _on_singleplayer_pressed():
 	print("Starting Singleplayer...")
@@ -58,14 +57,13 @@ func _on_join_pressed():
 func _on_refresh_pressed():
 	lobby_list.clear()
 	print("Suche nach Lobbies...")
-	if has_node("/root/SteamNetwork"):
-		get_node("/root/SteamNetwork").list_lobbies()
+	NetworkManager.list_lobbies()
 
 func _on_close_mp_pressed():
 	multiplayer_panel.visible = false
 
 func _on_back_pressed():
-	get_tree().change_scene_to_file(MAIN_MENU)
+	SceneTransition.change_scene(MAIN_MENU)
 
 func _on_lobby_list_received(lobbies: Array):
 	lobby_list.clear()

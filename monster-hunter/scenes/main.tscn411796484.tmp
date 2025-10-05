@@ -23,10 +23,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77222776, 1.3741729, 0.764
 [node name="Player" parent="Players" instance=ExtResource("4_tefeu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.158243, 0)
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://dp27wfbklu6ap")
-spawn_path = NodePath("../Players")
-spawn_limit = 4
-
 [node name="UIHandler" type="CanvasLayer" parent="."]
 script = ExtResource("3_jyhfs")
