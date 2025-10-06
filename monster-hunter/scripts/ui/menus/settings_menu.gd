@@ -25,7 +25,7 @@ extends Control
 @onready var back_button = $HBoxContainer/BackButton
 
 
-const MAIN_MENU = "res://scenes/menus/main_menu.tscn"
+const MAIN_MENU = "res://scenes/ui/menus/main_menu.tscn"
 
 func _ready():
 	# Load current settings
