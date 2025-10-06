@@ -31,11 +31,6 @@ func _ready():
 	# Load current settings
 	load_current_settings()
 	
-	# Connect signals
-	apply_button.pressed.connect(_on_apply_pressed)
-	reset_button.pressed.connect(_on_reset_pressed)
-	back_button.pressed.connect(_on_back_pressed)
-	
 	# Resolution Options
 	resolution_button.add_item("1920x1080")
 	resolution_button.add_item("1600x900")
@@ -105,4 +100,4 @@ func _on_reset_pressed():
 	print("Einstellungen zurückgesetzt!")
 
 func _on_back_pressed():
-	get_tree().change_scene_to_file(MAIN_MENU)
+	SceneTransition.change_scene(MAIN_MENU)
