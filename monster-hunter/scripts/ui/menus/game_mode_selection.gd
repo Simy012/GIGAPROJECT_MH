@@ -13,8 +13,6 @@ extends Control
 @onready var close_mp_button = $MultiplayerPanel/VBoxContainer/CloseButton
 
 
-const MAIN_MENU = "res://scenes/ui/menus/main_menu.tscn"
-
 func _ready():
 	# Main buttons
 	singleplayer_button.pressed.connect(_on_singleplayer_pressed)
@@ -63,7 +61,7 @@ func _on_close_mp_pressed():
 	multiplayer_panel.visible = false
 
 func _on_back_pressed():
-	SceneTransition.change_scene(MAIN_MENU)
+	SceneTransition.change_scene(GlobalData.MAIN_MENU)
 
 func _on_lobby_list_received(lobbies: Array):
 	lobby_list.clear()

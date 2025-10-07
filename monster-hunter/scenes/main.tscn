@@ -1,17 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://b0c64x0dgua2v"]
+[gd_scene load_steps=5 format=3 uid="uid://b0c64x0dgua2v"]
 
 [ext_resource type="PackedScene" uid="uid://b8luj06lh5dhv" path="res://scenes/environments/nexus/nexus_scene.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://c0200cry40evy" path="res://scripts/main.gd" id="1_tefeu"]
 [ext_resource type="Script" uid="uid://dyrb1nuu4shig" path="res://scripts/ui/ui_handler.gd" id="3_jyhfs"]
-[ext_resource type="Script" uid="uid://cxoo2wlaplh8v" path="res://scripts/entities/player/controller_examples/scripts/controllers/controller_player.gd" id="3_tefeu"]
 [ext_resource type="PackedScene" uid="uid://dp27wfbklu6ap" path="res://scenes/entities/player/player.tscn" id="4_tefeu"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_tefeu")
-
-[node name="PlayerController" type="Node" parent="." node_paths=PackedStringArray("controlled_obj")]
-script = ExtResource("3_tefeu")
-controlled_obj = NodePath("../Players/Player")
 
 [node name="Level" type="Node" parent="."]
 
@@ -21,12 +16,15 @@ controlled_obj = NodePath("../Players/Player")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77222776, 1.3741729, 0.76452255)
 
 [node name="Player" parent="Players" instance=ExtResource("4_tefeu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.158243, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.31097865, 0)
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://dp27wfbklu6ap")
 spawn_path = NodePath("../Players")
 spawn_limit = 4
 
 [node name="UIHandler" type="CanvasLayer" parent="."]
 script = ExtResource("3_jyhfs")
+
+[connection signal="despawned" from="PlayerSpawner" to="." method="_on_player_despawned"]
+[connection signal="spawned" from="PlayerSpawner" to="." method="_on_player_spawned"]

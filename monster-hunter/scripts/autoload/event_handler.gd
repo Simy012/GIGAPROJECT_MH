@@ -1,3 +1,4 @@
 extends Node
 
-signal player_added(player: Player)# TODO hier später multiplayer player benutzen, da ein normaler singelplay kein spieler adden kann
+signal player_added(player: Player)
+signal player_removed(player: Player)

@@ -25,8 +25,6 @@ extends Control
 @onready var back_button = $HBoxContainer/BackButton
 
 
-const MAIN_MENU = "res://scenes/ui/menus/main_menu.tscn"
-
 func _ready():
 	# Load current settings
 	load_current_settings()
@@ -100,4 +98,4 @@ func _on_reset_pressed():
 	print("Einstellungen zurückgesetzt!")
 
 func _on_back_pressed():
-	SceneTransition.change_scene(MAIN_MENU)
+	SceneTransition.change_scene(GlobalData.MAIN_MENU_SCENE)

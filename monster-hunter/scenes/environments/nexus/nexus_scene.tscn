@@ -5,6 +5,7 @@
 [sub_resource type="BoxMesh" id="BoxMesh_6typc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6typc"]
+size = Vector3(7.666237, 1, 1.0484619)
 
 [sub_resource type="BoxMesh" id="BoxMesh_pbjg3"]
 
@@ -23,12 +24,12 @@ skeleton = NodePath("../MeshInstance3D2")
 collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-transform = Transform3D(19.464334, 0, 0, 0, 0.23570876, 0, 0, 0, 17.65927, 0, 0, 0)
+transform = Transform3D(33.64655, 0, 0, 0, 0.23570876, 0, 0, 0, 32.245987, 0, 0, 0)
 mesh = SubResource("BoxMesh_6typc")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(19.464334, 0, 0, 0, 0.23570876, 0, 0, 0, 17.65927, 0, 0, 0)
+transform = Transform3D(4.393386, 0, 0, 0, 0.2381377, 0, 0, 0, 30.78301, -0.018032089, 0, 0.009394206)
 shape = SubResource("BoxShape3D_6typc")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]

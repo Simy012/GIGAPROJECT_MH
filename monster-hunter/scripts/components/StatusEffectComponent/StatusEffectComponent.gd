@@ -1,5 +1,5 @@
 extends Node
-class_name StatusEffectComponent
+class_name StatusEffectComponenttest
 
 ## Signal, wenn ein Effekt hinzugefügt oder entfernt wird
 signal effect_applied(effect_name: String)

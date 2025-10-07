@@ -1,0 +1,57 @@
+[gd_scene load_steps=9 format=3 uid="uid://dp27wfbklu6ap"]
+
+[ext_resource type="Script" uid="uid://b48bhegka3thj" path="res://scripts/entities/player/player.gd" id="1_7tlpx"]
+[ext_resource type="PackedScene" uid="uid://prh35jb6tjtd" path="res://scenes/entities/player/sophia/sophia_skin/sophia_skin.tscn" id="2_58kc7"]
+[ext_resource type="Script" uid="uid://d3rygij8tftl7" path="res://scripts/entities/player/camera_3D_component.gd" id="3_8akj5"]
+[ext_resource type="Script" uid="uid://cm3mjw2illnxy" path="res://scripts/entities/player/movement_component.gd" id="3_bjvvg"]
+[ext_resource type="Script" uid="uid://dfwrsk7mbf3c3" path="res://scripts/entities/player/status_effect_component.gd" id="4_8akj5"]
+[ext_resource type="Script" uid="uid://d36twvp550r6i" path="res://scripts/entities/player/input_component.gd" id="5_bj7e2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_j0oqr"]
+radius = 0.21484375
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_j0oqr"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("movement_component", "status_component", "input_component", "camera_component")]
+script = ExtResource("1_7tlpx")
+movement_component = NodePath("MovementComponent")
+status_component = NodePath("StatusEffectComponent")
+input_component = NodePath("InputComponent")
+camera_component = NodePath("CamPivot")
+
+[node name="SophiaSkin" parent="." instance=ExtResource("2_58kc7")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.079733, 0, 0, 0, 0.83166194, 0, 0, 0, 0.8160704, 0, 0.7753521, 0.019782364)
+shape = SubResource("CapsuleShape3D_j0oqr")
+
+[node name="CamPivot" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("3_8akj5")
+camera = NodePath("SpringArm3D/Camera3D")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CamPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.9722394, 0.2339884, 0, -0.2339884, 0.9722394, 0, 0, 0)
+spring_length = 2.0
+
+[node name="Camera3D" type="Camera3D" parent="CamPivot/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9802322e-08, 1.6688945)
+
+[node name="CharacterSync" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_j0oqr")
+
+[node name="MovementComponent" type="Node" parent="."]
+script = ExtResource("3_bjvvg")
+
+[node name="StatusEffectComponent" type="Node" parent="."]
+script = ExtResource("4_8akj5")
+
+[node name="InputComponent" type="Node" parent="."]
+script = ExtResource("5_bj7e2")

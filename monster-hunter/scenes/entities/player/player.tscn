@@ -1,30 +1,14 @@
-[gd_scene load_steps=17 format=3 uid="uid://dp27wfbklu6ap"]
+[gd_scene load_steps=9 format=3 uid="uid://dp27wfbklu6ap"]
 
 [ext_resource type="Script" uid="uid://b48bhegka3thj" path="res://scripts/entities/player/player.gd" id="1_7tlpx"]
 [ext_resource type="PackedScene" uid="uid://prh35jb6tjtd" path="res://scenes/entities/player/sophia/sophia_skin/sophia_skin.tscn" id="2_58kc7"]
-[ext_resource type="Script" uid="uid://812l427pcbu6" path="res://scripts/entities/player/controller_examples/scripts/cameras/third_person_cam.gd" id="4_tadr3"]
-[ext_resource type="Script" uid="uid://cavoehjg14dyj" path="res://scripts/entities/player/character_controller/scripts/action_container.gd" id="5_uncef"]
-[ext_resource type="Script" uid="uid://0s27mb2d6unm" path="res://scripts/entities/player/character_controller/scripts/action_container_config.gd" id="6_1wxtr"]
-[ext_resource type="Script" uid="uid://dn0l3kkomlwu7" path="res://scripts/entities/player/controller_examples/scripts/simple_character/actions/action_move_simple.gd" id="7_jykmq"]
-[ext_resource type="Script" uid="uid://cqdsr3d0jkd4b" path="res://scripts/entities/player/controller_examples/scripts/simple_character/actions/action_jump_simple.gd" id="8_hrie1"]
-[ext_resource type="Script" uid="uid://c6681ik7lvcr" path="res://scripts/entities/player/controller_examples/scripts/simple_character/actions/action_toggle_movement_state.gd" id="9_7o1e0"]
-[ext_resource type="Script" uid="uid://dm0g3witlgl8x" path="res://scripts/entities/player/controller_examples/scripts/simple_character/actions/action_fly.gd" id="10_0i38a"]
-[ext_resource type="Script" uid="uid://dhxeoug7ju6y3" path="res://scripts/entities/player/character_controller/scripts/movement_state_manager.gd" id="11_gu2ug"]
-[ext_resource type="Script" uid="uid://to2l8lodveh7" path="res://scripts/entities/player/controller_examples/scripts/simple_character/movement_grounded_complex.gd" id="12_s87xn"]
-[ext_resource type="Script" uid="uid://d06djvw0bjbol" path="res://scripts/entities/player/controller_examples/scripts/simple_character/movement_flight_simple.gd" id="13_jtwwv"]
+[ext_resource type="Script" uid="uid://d3rygij8tftl7" path="res://scripts/entities/player/camera_3D_component.gd" id="3_8akj5"]
+[ext_resource type="Script" uid="uid://cm3mjw2illnxy" path="res://scripts/entities/player/movement_component.gd" id="3_bjvvg"]
+[ext_resource type="Script" uid="uid://dfwrsk7mbf3c3" path="res://scripts/entities/player/status_effect_component.gd" id="4_8akj5"]
+[ext_resource type="Script" uid="uid://d36twvp550r6i" path="res://scripts/entities/player/input_component.gd" id="5_bj7e2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_j0oqr"]
 radius = 0.21484375
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_j0oqr"]
-
-[sub_resource type="Resource" id="Resource_g44xp"]
-script = ExtResource("6_1wxtr")
-config_dict = Dictionary[StringName, Array]({
-&"flight": [&"Fly", &"Dash", &"ToggleMovementState"],
-&"grounded": [&"Move", &"Jump", &"ToggleMovementState", &"Dash"]
-})
-metadata/_custom_type_script = "uid://0s27mb2d6unm"
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_j0oqr"]
 properties/0/path = NodePath(".:position")
@@ -34,8 +18,15 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" groups=["ControllableCharacter"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("movement_component", "status_component", "input_component", "camera_component", "_skin")]
+collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_7tlpx")
+movement_component = NodePath("MovementComponent")
+status_component = NodePath("StatusEffectComponent")
+input_component = NodePath("InputComponent")
+camera_component = NodePath("CamPivot")
+_skin = NodePath("SophiaSkin")
 
 [node name="SophiaSkin" parent="." instance=ExtResource("2_58kc7")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
@@ -44,52 +35,26 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0
 transform = Transform3D(1.079733, 0, 0, 0, 0.83166194, 0, 0, 0, 0.8160704, 0, 0.7753521, 0.019782364)
 shape = SubResource("CapsuleShape3D_j0oqr")
 
-[node name="CamPivot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.317, 0)
-script = ExtResource("4_tadr3")
+[node name="CamPivot" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("3_8akj5")
+camera = NodePath("SpringArm3D/Camera3D")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CamPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.317, 0)
-top_level = true
-shape = SubResource("SphereShape3D_j0oqr")
+transform = Transform3D(1, 0, 0, 0, 0.9722394, 0.2339884, 0, -0.2339884, 0.9722394, 0, 0, 0)
 spring_length = 2.0
-margin = 0.2
 
 [node name="Camera3D" type="Camera3D" parent="CamPivot/SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9802322e-08, 1.6688945)
 
-[node name="ActionContainer" type="Node" parent="." node_paths=PackedStringArray("model")]
-script = ExtResource("5_uncef")
-model = NodePath("../SophiaSkin")
-_config_profiles = SubResource("Resource_g44xp")
-_starting_config = &"grounded"
-_disable_config_warnings = true
-
-[node name="Move" type="Node" parent="ActionContainer" node_paths=PackedStringArray("model")]
-script = ExtResource("7_jykmq")
-model = NodePath("../../SophiaSkin")
-
-[node name="Jump" type="Node" parent="ActionContainer" node_paths=PackedStringArray("model")]
-script = ExtResource("8_hrie1")
-model = NodePath("../../SophiaSkin")
-
-[node name="ToggleMovementState" type="Node" parent="ActionContainer" node_paths=PackedStringArray("model")]
-script = ExtResource("9_7o1e0")
-model = NodePath("../../SophiaSkin")
-
-[node name="Fly" type="Node" parent="ActionContainer" node_paths=PackedStringArray("model")]
-script = ExtResource("10_0i38a")
-model = NodePath("../../SophiaSkin")
-
-[node name="MovementManager" type="Node" parent="." node_paths=PackedStringArray("active_state")]
-script = ExtResource("11_gu2ug")
-active_state = NodePath("GroundedMovement")
-
-[node name="GroundedMovement" type="Node" parent="MovementManager"]
-script = ExtResource("12_s87xn")
-
-[node name="FlyingMovement" type="Node" parent="MovementManager"]
-script = ExtResource("13_jtwwv")
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="CharacterSync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_j0oqr")
+
+[node name="MovementComponent" type="Node" parent="."]
+script = ExtResource("3_bjvvg")
+
+[node name="StatusEffectComponent" type="Node" parent="."]
+script = ExtResource("4_8akj5")
+
+[node name="InputComponent" type="Node" parent="."]
+script = ExtResource("5_bj7e2")

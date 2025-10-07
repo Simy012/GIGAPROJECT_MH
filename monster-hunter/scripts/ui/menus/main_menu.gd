@@ -7,10 +7,7 @@ extends Control
 
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var background = $Background
 
-const SETTINGS_MENU = "res://scenes/ui/menus/settings_menu.tscn"
-const GAME_MODE_SELECTION = "res://scenes/ui/menus/game_mode_selection.tscn"
 
 func _ready():
 	# Buttons verbinden
@@ -33,8 +30,8 @@ func _on_play_pressed():
 		return
 	play_button_sound()
 	disable_buttons()
-	# Scene wechseln mit Fade
-	await SceneTransition.change_scene(GAME_MODE_SELECTION, 0.4)
+	
+	SceneTransition.change_scene(GlobalData.GAME_MODE_SELECTION_SCENE, 0.4)
 
 
 func _on_settings_pressed():
@@ -43,7 +40,7 @@ func _on_settings_pressed():
 	play_button_sound()
 	disable_buttons()
 	
-	await SceneTransition.change_scene(SETTINGS_MENU, 0.4)
+	SceneTransition.change_scene(GlobalData.SETTINGS_MENU_SCENE, 0.4)
 
 
 func _on_quit_pressed():

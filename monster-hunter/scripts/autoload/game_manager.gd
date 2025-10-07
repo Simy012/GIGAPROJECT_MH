@@ -11,9 +11,7 @@ var is_game_paused: bool = false
 var steam_initialized: bool = false
 
 # Scene Pfade
-const MAIN_MENU_SCENE = "res://scenes/menus/main_menu.tscn"
-const GAME_MODE_SELECTION_SCENE = "res://scenes/menus/game_mode_selection.tscn"
-const MAIN_GAME_SCENE = "res://scenes/main.tscn"
+
 
 signal game_mode_changed(mode: GameMode)
 signal steam_ready
@@ -36,7 +34,7 @@ func initialize_steam():
 func start_singleplayer():
 	current_game_mode = GameMode.SINGLEPLAYER
 	game_mode_changed.emit(current_game_mode)
-	load_scene(MAIN_GAME_SCENE)
+	load_scene(GlobalData.MAIN_GAME_SCENE)
 
 func start_multiplayer_host():
 	print("Starting Multiplayer Host...")
@@ -44,7 +42,7 @@ func start_multiplayer_host():
 	game_mode_changed.emit(current_game_mode)
 	
 	# ERST Scene laden
-	load_scene(MAIN_GAME_SCENE)
+	load_scene(GlobalData.MAIN_GAME_SCENE)
 	
 	# Warten bis Scene geladen ist
 	await get_tree().tree_changed
@@ -66,7 +64,7 @@ func start_multiplayer_client(lobby_id: int):
 	game_mode_changed.emit(current_game_mode)
 	
 	# ERST Scene laden
-	load_scene(MAIN_GAME_SCENE)
+	load_scene(GlobalData.MAIN_GAME_SCENE)
 	
 	# Warten bis Scene geladen ist
 	await get_tree().tree_changed
@@ -81,12 +79,11 @@ func start_multiplayer_client(lobby_id: int):
 	# Steam Network joinen (jetzt existiert die Scene)
 	NetworkManager.join_as_client(lobby_id)
 	print("Steam Network: Joined lobby %s!" % lobby_id)
-	
-	
+
 
 func return_to_main_menu():
 	current_game_mode = GameMode.SINGLEPLAYER
-	load_scene(MAIN_MENU_SCENE)
+	load_scene(GlobalData.MAIN_MENU_SCENE)
 
 func load_scene(scene_path: String):
 	SceneTransition.change_scene(scene_path)
