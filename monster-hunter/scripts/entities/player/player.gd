@@ -122,7 +122,6 @@ func process_movement(delta: float, input_data: Dictionary):
 		knockback_velocity = knockback_velocity.move_toward(Vector3.ZERO, delta * 10)
 	
 	# --- Bewegung anwenden ---
-	print("Velocity2: ",velocity)
 	move_and_slide()
 	
 	if move_direction.length() > 0.2:
