@@ -4,7 +4,7 @@ signal item_selected(item_stack: ItemStack)
 
 @export var icon_texture: TextureRect
 @export var quantity_label: Label
-@export var rarity_panel: Panel
+@export var rarity_panel: TextureRect
 @export var item_name_label: Label
 
 var item_stack: ItemStack
@@ -45,6 +45,9 @@ func update_display() -> void:
 	# Item Name
 	if item_name_label:
 		item_name_label.text = item.item_name
+	
+	if item_stack.item.description:
+		tooltip_text = item_stack.item.description
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -60,7 +63,7 @@ func _on_mouse_exited() -> void:
 	hide_tooltip()
 
 func show_tooltip() -> void:
-	# Hier könntest du einen Tooltip mit Details anzeigen
+
 	pass
 
 func hide_tooltip() -> void:

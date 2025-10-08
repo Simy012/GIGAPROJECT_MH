@@ -6,7 +6,7 @@ signal inventory_closed
 
 @export var inventory: Inventory
 @export var grid_container: GridContainer
-@export var filter_buttons: HBoxContainer
+@export var filter_buttons: OptionButton
 var item_slot_scene: PackedScene = preload(GlobalData.ITEM_SLOT_SCENE)
 
 enum FilterType {
@@ -106,3 +106,19 @@ func on_inventory_opened():
 
 func on_inventory_closed():
 	visible = false
+
+
+func _on_option_button_item_selected(index):
+	match filter_buttons.get_item_text(index):
+		"All":
+			current_filter = FilterType.ALL
+		"Resources":
+			current_filter = FilterType.RESOURCES
+		"Weapons":
+			current_filter = FilterType.WEAPONS
+		"Armors":
+			current_filter = FilterType.ARMOR
+		_:
+			current_filter = FilterType.ALL
+	print("Set Filter to: %s" % current_filter)
+	refresh_ui()
