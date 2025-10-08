@@ -10,7 +10,9 @@ class_name Player
 @export var camera_component: Camera3DComponent
 @export var inventory_component: Inventory
 @export var equipment_manager_component: EquipmentManager
-@onready var multiplayer_sync = $CharacterSync
+@onready var multiplayer_sync: MultiplayerSynchronizer = $CharacterSync
+@onready var health_component: HealthComponent = $HealthComponent
+@onready var hitbox_component: HitboxComponent = $HitboxComponent
 
 
 var is_local_player: bool = false
@@ -41,9 +43,6 @@ func setup_local_player():
 	# Input aktivieren
 	if input_component:
 		input_component.enabled = true
-	
-	# Mouse capture
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func setup_remote_player():
 	# Kamera für andere Spieler deaktivieren
@@ -57,12 +56,11 @@ func setup_remote_player():
 
 func _physics_process(delta):
 	# Nur Authority verarbeitet Physics
-	if not is_multiplayer_authority():
+	if not multiplayer.is_server():
 		return
 	
-	
 	# Input holen
-	var input_data = input_component.get_input_data() if input_component else {}
+	var input_data = input_component.input_data
 	
 	if movement_component:
 		movement_component.process_movement(delta, input_data)

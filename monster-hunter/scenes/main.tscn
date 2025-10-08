@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://b0c64x0dgua2v"]
+[gd_scene load_steps=5 format=3 uid="uid://b0c64x0dgua2v"]
 
 [ext_resource type="PackedScene" uid="uid://b8luj06lh5dhv" path="res://scenes/environments/nexus/nexus_scene.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://c0200cry40evy" path="res://scripts/main.gd" id="1_tefeu"]
 [ext_resource type="Script" uid="uid://dyrb1nuu4shig" path="res://scripts/ui/ui_handler.gd" id="3_jyhfs"]
-[ext_resource type="PackedScene" uid="uid://dp27wfbklu6ap" path="res://scenes/entities/player/player.tscn" id="4_tefeu"]
 [ext_resource type="PackedScene" uid="uid://wrviritf6tr1" path="res://scenes/ui/inventory/inventory_gui.tscn" id="5_tbgi4"]
 
 [node name="Main" type="Node3D" node_paths=PackedStringArray("ui_handler")]
@@ -16,9 +15,6 @@ ui_handler = NodePath("UIHandler")
 
 [node name="Players" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77222776, 1.3741729, 0.76452255)
-
-[node name="Player" parent="Players" instance=ExtResource("4_tefeu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.31097865, 0)
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://dp27wfbklu6ap")

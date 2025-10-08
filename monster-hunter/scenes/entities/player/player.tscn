@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dp27wfbklu6ap"]
+[gd_scene load_steps=13 format=3 uid="uid://dp27wfbklu6ap"]
 
 [ext_resource type="Script" uid="uid://b48bhegka3thj" path="res://scripts/entities/player/player.gd" id="1_7tlpx"]
 [ext_resource type="PackedScene" uid="uid://prh35jb6tjtd" path="res://scenes/entities/player/sophia/sophia_skin/sophia_skin.tscn" id="2_58kc7"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" uid="uid://d36twvp550r6i" path="res://scripts/entities/player/input_component.gd" id="5_bj7e2"]
 [ext_resource type="Script" uid="uid://0gp3a0yowc61" path="res://scripts/components/InventoryComponent/inventory.gd" id="7_bj7e2"]
 [ext_resource type="Script" uid="uid://casey4mh5rjva" path="res://scripts/components/InventoryComponent/equipment_manager.gd" id="8_1murt"]
+[ext_resource type="Script" uid="uid://cv5mgn7jkcqbc" path="res://scripts/components/HealthComponent/health_component.gd" id="9_ovg4i"]
+[ext_resource type="Script" uid="uid://dp6wcvdh3b3vi" path="res://scripts/components/HitboxComponent/HitboxComponent.gd" id="10_7wli1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_j0oqr"]
 radius = 0.21484375
@@ -19,6 +21,15 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath("InputComponent:input_data")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("HealthComponent:max_health")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("HealthComponent:current_health")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("movement_component", "status_component", "input_component", "camera_component", "inventory_component", "equipment_manager_component")]
 collision_layer = 2
@@ -39,16 +50,15 @@ transform = Transform3D(1.079733, 0, 0, 0, 0.83166194, 0, 0, 0, 0.8160704, 0, 0.
 shape = SubResource("CapsuleShape3D_j0oqr")
 
 [node name="CamPivot" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2033095, 1.5, 0)
 script = ExtResource("3_8akj5")
 camera = NodePath("SpringArm3D/Camera3D")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CamPivot"]
-transform = Transform3D(1, 0, 0, 0, 0.9722394, 0.2339884, 0, -0.2339884, 0.9722394, 0, 0, 0)
-spring_length = 2.0
+transform = Transform3D(1, 0, 0, 0, 0.9722394, 0.2339884, 0, -0.2339884, 0.9722394, 0, 0.14975573, 0.6222464)
 
 [node name="Camera3D" type="Camera3D" parent="CamPivot/SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9802322e-08, 1.6688945)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4703484e-08, 0.8544715)
 
 [node name="CharacterSync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_j0oqr")
@@ -72,3 +82,15 @@ script = ExtResource("7_bj7e2")
 [node name="EquipmentManagerComponent" type="Node" parent="." node_paths=PackedStringArray("player_node")]
 script = ExtResource("8_1murt")
 player_node = NodePath("..")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("9_ovg4i")
+max_health = 100.0
+current_health = 100.0
+metadata/_custom_type_script = "uid://cv5mgn7jkcqbc"
+
+[node name="HitboxComponent" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("10_7wli1")
+metadata/_custom_type_script = "uid://dp6wcvdh3b3vi"

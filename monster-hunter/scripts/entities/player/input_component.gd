@@ -3,11 +3,13 @@ class_name InputComponent
 
 var enabled: bool = false
 
-func get_input_data() -> Dictionary:
+@export var input_data: Dictionary
+
+func _input(event):
 	if not enabled:
-		return {}
+		return
 	
-	var input_data = {}
+	input_data = {}
 	
 	# Movement Direction
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
@@ -21,5 +23,3 @@ func get_input_data() -> Dictionary:
 	
 	# Attack (für später)
 	#input_data["attack"] = Input.is_action_just_pressed("attack")
-	
-	return input_data

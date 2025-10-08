@@ -13,6 +13,7 @@ func can_add(amount: int) -> bool:
 		return false
 	return quantity + amount <= item.max_stack_size
 
+# returns remaining
 func add(amount: int) -> int:
 	if not item:
 		return amount
@@ -20,7 +21,7 @@ func add(amount: int) -> int:
 	var space_left = item.max_stack_size - quantity
 	var amount_to_add = mini(amount, space_left)
 	quantity += amount_to_add
-	return amount - amount_to_add # Gibt übrige Menge zurück
+	return (amount - amount_to_add) # Gibt übrige Menge zurück
 
 func remove(amount: int) -> int:
 	var amount_to_remove = mini(amount, quantity)

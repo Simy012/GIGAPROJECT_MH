@@ -39,6 +39,7 @@ func change_scene(target_scene: String, duration: float = 0.5):
 	color_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	is_transitioning = false
 
+
 # Nur fade out (ohne Scene-Wechsel)
 func fade_out(duration: float = 0.5) -> void:
 	var tween = create_tween()

@@ -14,3 +14,7 @@ const ITEM_SLOT_SCENE = "res://scenes/ui/inventory/item_slot.tscn"
 
 # Player Scene
 var multiplayer_scene = preload("res://scenes/entities/player/player.tscn")
+
+# Network Scenes
+var enet_network_scene := preload("res://scenes/multiplayer/networks/enet_network.tscn")
+var steam_network_scene := preload("res://scenes/multiplayer/networks/steam_network.tscn")

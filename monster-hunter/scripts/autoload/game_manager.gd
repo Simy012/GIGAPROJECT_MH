@@ -10,6 +10,7 @@ var current_game_mode: GameMode = GameMode.SINGLEPLAYER
 var is_game_paused: bool = false
 var steam_initialized: bool = false
 
+var players_spawn_node: Node3D
 
 
 signal game_mode_changed(mode: GameMode)
@@ -37,6 +38,17 @@ func start_singleplayer():
 	current_game_mode = GameMode.SINGLEPLAYER
 	game_mode_changed.emit(current_game_mode)
 	load_scene(GlobalData.MAIN_GAME_SCENE)
+	
+	# Warten bis Scene geladen ist
+	await get_tree().tree_changed
+	await get_tree().process_frame
+	await get_tree().process_frame
+	
+	# Input freigeben
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
+	_add_player_to_game(1)
+	print("Singleplayer started")
 
 func start_multiplayer_host():
 	print("Starting Multiplayer Host...")
@@ -49,9 +61,6 @@ func start_multiplayer_host():
 	# Warten bis Scene geladen ist
 	await get_tree().tree_changed
 	await get_tree().process_frame
-	
-	# DANN Singleplayer Character entfernen
-	await remove_singleplayer_character()
 	
 	# Input freigeben
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -71,9 +80,6 @@ func start_multiplayer_client(lobby_id: int):
 	# Warten bis Scene geladen ist
 	await get_tree().tree_changed
 	await get_tree().process_frame
-	
-	# DANN Singleplayer Character entfernen
-	await remove_singleplayer_character()
 	
 	# Input freigeben
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -102,24 +108,26 @@ func resume_game():
 	get_tree().paused = false
 
 
-func remove_singleplayer_character():
-	print("Removing single player character...")
-	
-	# Warte einen Frame damit Scene vollständig geladen ist
-	await get_tree().process_frame
-	
-	var player_node = NetworkManager.players_spawn_node
-	
-	if not player_node:
-		print("No players Found")
+func _add_player_to_game(id: int):
+	if not multiplayer.is_server():
 		return
+	print("Adding Player with ID: %s" % id)
 	
-	# Entferne ersten Player (Singleplayer Character)
-	if player_node.get_child_count() > 0:
-		var player_to_remove = player_node.get_child(0)
-		print("Removing player: %s" % player_to_remove.name)
-		player_to_remove.queue_free()
-		await player_to_remove.tree_exited
-		print("Single player character removed!")
-	else:
-		print("No player to remove")
+	var player_to_add = GlobalData.multiplayer_scene.instantiate()
+	player_to_add.player_id = id
+	player_to_add.name = str(id)
+	
+	player_to_add.set_multiplayer_authority(id)
+	
+	players_spawn_node.add_child(player_to_add, true)
+	EventHandler.player_added.emit(player_to_add)
+	print("Player %s spawned successfully!" % id)
+
+
+func _del_player(id: int):
+	if not multiplayer.is_server():
+		return
+	print("Player %s left the game!" % id)
+	if not players_spawn_node.has_node(str(id)):
+		return
+	players_spawn_node.get_node(str(id)).queue_free()

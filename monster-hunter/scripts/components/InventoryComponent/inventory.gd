@@ -33,7 +33,7 @@ func add_item(item: Item, quantity: int = 1) -> bool:
 	while remaining > 0:
 		var new_stack = ItemStack.new(item, 0)
 		var added = new_stack.add(remaining)
-		remaining -= added
+		remaining = added
 		items.append(new_stack)
 	
 	item_added.emit(item, quantity)

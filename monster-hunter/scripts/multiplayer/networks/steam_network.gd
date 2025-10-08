@@ -112,23 +112,10 @@ func _on_lobby_kicked(lobby_id: int, lobby_owner_id: int, reason: int):
 func _add_player_to_game(id: int):
 	if not multiplayer.is_server():
 		return
-	print("Adding Player with ID: %s" % id)
-	
-	var player_to_add = GlobalData.multiplayer_scene.instantiate()
-	player_to_add.player_id = id
-	player_to_add.name = str(id)
-	
-	player_to_add.set_multiplayer_authority(id)
-	
-	NetworkManager.players_spawn_node.add_child(player_to_add, true)
-	EventHandler.player_added.emit(player_to_add)
-	print("Player %s spawned successfully!" % id)
+	GameManager._add_player_to_game(id)
 
 
 func _del_player(id: int):
 	if not multiplayer.is_server():
 		return
-	print("Player %s left the game!" % id)
-	if not NetworkManager.players_spawn_node.has_node(str(id)):
-		return
-	NetworkManager.players_spawn_node.get_node(str(id)).queue_free()
+	GameManager._del_player(id)

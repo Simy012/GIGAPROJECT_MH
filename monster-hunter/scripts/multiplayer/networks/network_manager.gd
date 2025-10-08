@@ -2,24 +2,16 @@ extends Node
 
 enum MULTIPLAYER_NETWORK_TYPE { ENET, STEAM }
 
-var players_spawn_node: Node3D
 var active_network_type: MULTIPLAYER_NETWORK_TYPE = MULTIPLAYER_NETWORK_TYPE.STEAM
 var active_network
 
-var enet_network_scene := preload("res://scenes/multiplayer/networks/enet_network.tscn")
-var steam_network_scene := preload("res://scenes/multiplayer/networks/steam_network.tscn")
+
 
 signal network_ready
 
 func _ready():
 	print("NetworkManager initialized")
 
-func set_players_spawn_node(node: Node3D):
-	"""
-	Wird von der Main Scene aufgerufen um die Spawn-Position zu setzen
-	"""
-	players_spawn_node = node
-	print("Players spawn node set: %s" % node.name)
 
 func build_multiplayer_network():
 	if active_network:
@@ -32,20 +24,16 @@ func build_multiplayer_network():
 	match active_network_type:
 		MULTIPLAYER_NETWORK_TYPE.ENET:
 			print("Setting network type to ENet")
-			set_active_network(enet_network_scene)
+			set_active_network(GlobalData.enet_network_scene)
 		MULTIPLAYER_NETWORK_TYPE.STEAM:
 			print("Setting network type to Steam")
-			set_active_network(steam_network_scene)
+			set_active_network(GlobalData.steam_network_scene)
 		_:
 			print("No match for network type!")
 
 func set_active_network(active_network_scene: PackedScene):
 	var network_scene_initialized = active_network_scene.instantiate()
 	active_network = network_scene_initialized
-	
-	# Spawn node setzen wenn vorhanden
-	if players_spawn_node:
-		active_network._players_spawn_node = players_spawn_node
 	
 	add_child(active_network)
 	network_ready.emit()
