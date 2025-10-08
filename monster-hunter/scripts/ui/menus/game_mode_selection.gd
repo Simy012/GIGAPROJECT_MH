@@ -14,6 +14,7 @@ extends Control
 
 
 func _ready():
+	MultiplayerManager.multiplayer_mode_enabled_changed.connect(on_multiplayer_mode_enabled_changed)
 	# Main buttons
 	singleplayer_button.pressed.connect(_on_singleplayer_pressed)
 	multiplayer_button.pressed.connect(_on_multiplayer_pressed)
@@ -25,11 +26,22 @@ func _ready():
 	refresh_button.pressed.connect(_on_refresh_pressed)
 	close_mp_button.pressed.connect(_on_close_mp_pressed)
 	
+	if not MultiplayerManager.multiplayer_mode_enabled:
+		print("No Connection to Steam")
+		multiplayer_button.disabled = true
+		
 	# Hide multiplayer panel initially
 	multiplayer_panel.visible = false
 	
 	# Connect Steam signals
 	Steam.lobby_match_list.connect(_on_lobby_list_received)
+
+
+func on_multiplayer_mode_enabled_changed(enabled: bool):
+	if enabled:
+		multiplayer_button.disabled = false
+	else: 
+		multiplayer_button.disabled = true
 
 func _on_singleplayer_pressed():
 	print("Starting Singleplayer...")
@@ -61,7 +73,7 @@ func _on_close_mp_pressed():
 	multiplayer_panel.visible = false
 
 func _on_back_pressed():
-	SceneTransition.change_scene(GlobalData.MAIN_MENU)
+	SceneTransition.change_scene(GlobalData.MAIN_MENU_SCENE)
 
 func _on_lobby_list_received(lobbies: Array):
 	lobby_list.clear()

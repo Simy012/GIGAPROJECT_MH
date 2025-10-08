@@ -1,12 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0c64x0dgua2v"]
+[gd_scene load_steps=6 format=3 uid="uid://b0c64x0dgua2v"]
 
 [ext_resource type="PackedScene" uid="uid://b8luj06lh5dhv" path="res://scenes/environments/nexus/nexus_scene.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://c0200cry40evy" path="res://scripts/main.gd" id="1_tefeu"]
 [ext_resource type="Script" uid="uid://dyrb1nuu4shig" path="res://scripts/ui/ui_handler.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://dp27wfbklu6ap" path="res://scenes/entities/player/player.tscn" id="4_tefeu"]
+[ext_resource type="PackedScene" uid="uid://wrviritf6tr1" path="res://scenes/ui/inventory/inventory_gui.tscn" id="5_tbgi4"]
 
-[node name="Main" type="Node3D"]
+[node name="Main" type="Node3D" node_paths=PackedStringArray("ui_handler")]
 script = ExtResource("1_tefeu")
+ui_handler = NodePath("UIHandler")
 
 [node name="Level" type="Node" parent="."]
 
@@ -23,8 +25,12 @@ _spawnable_scenes = PackedStringArray("uid://dp27wfbklu6ap")
 spawn_path = NodePath("../Players")
 spawn_limit = 4
 
-[node name="UIHandler" type="CanvasLayer" parent="."]
+[node name="UIHandler" type="CanvasLayer" parent="." node_paths=PackedStringArray("inventory_gui")]
 script = ExtResource("3_jyhfs")
+inventory_gui = NodePath("InventoryGui")
+
+[node name="InventoryGui" parent="UIHandler" instance=ExtResource("5_tbgi4")]
+visible = false
 
 [connection signal="despawned" from="PlayerSpawner" to="." method="_on_player_despawned"]
 [connection signal="spawned" from="PlayerSpawner" to="." method="_on_player_spawned"]

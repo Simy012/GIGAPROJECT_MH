@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=3 uid="uid://wrviritf6tr1"]
+
+[ext_resource type="Script" uid="uid://6tbegufp2eo1" path="res://scripts/ui/inventory/inventory_ui.gd" id="1_0xt0p"]
+
+[node name="InventoryGui" type="Control" node_paths=PackedStringArray("grid_container", "filter_buttons")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0xt0p")
+grid_container = NodePath("ScrollContainer/GridContainer")
+filter_buttons = NodePath("VBoxContainer/FilterButtons")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.3647059, 0.5921569, 0.5176471, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 139.0
+offset_top = 26.0
+offset_right = 214.0
+offset_bottom = 49.0
+text = "Inventory"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 79.0
+offset_right = 508.0
+offset_bottom = 289.0
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer"]
+layout_mode = 2
+columns = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 307.0
+offset_top = 20.0
+offset_right = 469.0
+offset_bottom = 67.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Filters:"
+
+[node name="FilterButtons" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2

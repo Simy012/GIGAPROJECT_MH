@@ -2,17 +2,19 @@ extends Node
 class_name MovementComponent
 
 # Referenz zum Character
-var character: Player
+@export var character: CharacterBody3D
+@export var camera_component: Camera3DComponent
+@export var status_component: StatusEffectComponent
+@export var _skin: Node3D
 
 
-# Movement Stats
-@export_group("Movement")
-@export var walk_speed: float = 5.0
-@export var sprint_speed: float = 8.0
-@export var jump_velocity: float = 6.0
-@export var acceleration: float = 10.0
-@export var deceleration: float = 15.0
-@export var air_control: float = 0.3
+var move_speed: float = 10.0
+var acceleration: float = 10.0
+var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+var jump_force: float = 6.0
+var knockback_velocity: Vector3 = Vector3.ZERO
+var _last_movement_direction := Vector3.BACK
+@export var rotation_speed := 12.0
 
 @export_group("Stamina")
 @export var max_stamina: float = 100.0
@@ -23,75 +25,81 @@ var character: Player
 # State
 var current_stamina: float = 100.0
 var is_sprinting: bool = false
-var knockback_velocity: Vector3 = Vector3.ZERO
 var knockback_decay: float = 5.0
-
-# Gravity
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready():
 	current_stamina = max_stamina
 
+# --- Movement Logik ---
 func process_movement(delta: float, input_data: Dictionary):
-	if not character:
-		return
+	if is_stunned():
+		# Wenn betäubt, kein Input und kein Move
+		input_data = {}
 	
-	# Status Effects checken
-	var is_stunned = character.is_stunned() if character.has_method("is_stunned") else false
-	var is_slowed = character.is_slowed() if character.has_method("is_slowed") else false
+	# --- Input Richtung holen ---
+	var input_dir: Vector2 = Vector2.ZERO
+	if "move_direction" in input_data:
+		input_dir = input_data["move_direction"]
 	
-	# Wenn stunned, keine Bewegung
-	if is_stunned:
-		apply_gravity(delta)
-		apply_knockback(delta)
-		character.move_and_slide()
-		return
-	
-	# Stamina regenerieren
-	regenerate_stamina(delta)
-	
-	# Gravity
-	apply_gravity(delta)
-	
-	# Knockback anwenden (z.B. von Monster-Angriffen)
-	apply_knockback(delta)
-	
-	# Jump
-	if input_data.get("jump", false) and character.is_on_floor():
-		try_jump()
-	
-	# Movement Direction
-	var input_dir = input_data.get("move_direction", Vector2.ZERO)
-	var direction = get_movement_direction(input_dir)
-	
-	# Sprint
-	var want_sprint = input_data.get("sprint", false)
-	update_sprint_state(want_sprint, direction.length() > 0)
-	
-	# Speed berechnen
-	var target_speed = get_current_speed(is_slowed)
-	
-	# Bewegung anwenden
-	if direction.length() > 0:
-		print(direction)
-		var target_velocity = direction * target_speed
-		character.velocity.x = lerp(character.velocity.x, target_velocity.x, acceleration * delta)
-		character.velocity.z = lerp(character.velocity.z, target_velocity.z, acceleration * delta)
-		
-		#  Jetzt in Bewegungsrichtung ausrichten
-		var target_rotation = atan2(-direction.x, -direction.z)
-		character.rotation.y = lerp_angle(character.rotation.y, target_rotation, 2.0 * delta)
-	else:
-		# Deceleration
-		character.velocity.x = lerp(character.velocity.x, 0.0, deceleration * delta)
-		character.velocity.z = lerp(character.velocity.z, 0.0, deceleration * delta)
-	
-	character.move_and_slide()
+	var move_direction: Vector3
+	# --- Kamera-Relative Richtung berechnen ---
+	if camera_component and camera_component.camera:
+		var forward := camera_component.camera.global_basis.z
+		var right := camera_component.camera.global_basis.x
+		move_direction = forward * input_dir.y + right * input_dir.x
+		move_direction.y = 0.0
+		move_direction = move_direction.normalized()
 
-
-func apply_gravity(delta: float):
+		var y_velocity := character.velocity.y
+		character.velocity.y = 0.0
+		character.velocity = character.velocity.move_toward(move_direction * move_speed, acceleration * delta)
+		character.velocity.y = y_velocity + (-1 * gravity * delta)
+	
+	# --- Sprung ---
+	var is_starting_jump: bool = false
+	if "jump" in input_data and input_data["jump"] and character.is_on_floor():
+		is_starting_jump = true
+		character.velocity.y = jump_force
+	
+	# --- Schwerkraft ---
 	if not character.is_on_floor():
 		character.velocity.y -= gravity * delta
+	else:
+		# Wenn auf Boden, Y-Velocity nicht zu groß
+		if character.velocity.y < 0:
+			character.velocity.y = -0.1
+	
+	# --- Knockback anwenden ---
+	if knockback_velocity.length() > 0.1:
+		character.velocity += knockback_velocity
+		knockback_velocity = knockback_velocity.move_toward(Vector3.ZERO, delta * 10)
+	
+	# --- Bewegung anwenden ---
+	character.move_and_slide()
+	
+	if move_direction.length() > 0.2:
+		_last_movement_direction = move_direction
+	var target_angle := Vector3.BACK.signed_angle_to(_last_movement_direction, Vector3.UP)
+	_skin.global_rotation.y = lerp_angle(_skin.rotation.y, target_angle, rotation_speed * delta)
+
+	if is_starting_jump:
+		_skin.jump()
+	elif not character.is_on_floor() and character.velocity.y < 0:
+		_skin.fall()
+	elif character.is_on_floor():
+		var ground_speed := character.velocity.length()
+		if ground_speed > 0.0:
+			_skin.move()
+		else:
+			_skin.idle()
+
+
+func is_stunned() -> bool:
+	return status_component.is_stunned() if status_component else false
+
+func is_slowed() -> bool:
+	return status_component.is_slowed() if status_component else false
+
 
 func get_movement_direction(input_dir: Vector2) -> Vector3:
 	if not character.camera_component or not character.camera_component.camera:
@@ -112,28 +120,6 @@ func get_movement_direction(input_dir: Vector2) -> Vector3:
 	return move_direction
 
 
-func get_current_speed(is_slowed: bool) -> float:
-	var base_speed = sprint_speed if is_sprinting else walk_speed
-	
-	# Slow Effect anwenden
-	if is_slowed:
-		var slow_multiplier = character.status_component.get_slow_multiplier()
-		base_speed *= slow_multiplier
-	
-	return base_speed
-
-func update_sprint_state(want_sprint: bool, is_moving: bool):
-	# Sprint nur wenn Stamina vorhanden und bewegend
-	if want_sprint and is_moving and current_stamina > 0:
-		is_sprinting = true
-	else:
-		is_sprinting = false
-
-func try_jump():
-	if current_stamina >= jump_stamina_cost:
-		character.velocity.y = jump_velocity
-		current_stamina -= jump_stamina_cost
-
 func regenerate_stamina(delta: float):
 	# Keine Regen während Sprint
 	if is_sprinting:
@@ -143,16 +129,7 @@ func regenerate_stamina(delta: float):
 		current_stamina += stamina_regen_rate * delta
 		current_stamina = min(max_stamina, current_stamina)
 
-func apply_knockback_force(direction: Vector3, force: float):
-	#Von außen aufgerufen z.B. bei Monster-Attacke
-	knockback_velocity = direction.normalized() * force
 
-func apply_knockback(delta: float):
-	if knockback_velocity.length() > 0.1:
-		character.velocity += knockback_velocity * delta
-		knockback_velocity = knockback_velocity.lerp(Vector3.ZERO, knockback_decay * delta)
-	else:
-		knockback_velocity = Vector3.ZERO
 
 func get_stamina_percent() -> float:
 	return current_stamina / max_stamina

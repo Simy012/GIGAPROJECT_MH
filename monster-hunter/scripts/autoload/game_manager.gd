@@ -10,7 +10,6 @@ var current_game_mode: GameMode = GameMode.SINGLEPLAYER
 var is_game_paused: bool = false
 var steam_initialized: bool = false
 
-# Scene Pfade
 
 
 signal game_mode_changed(mode: GameMode)
@@ -26,10 +25,13 @@ func initialize_steam():
 		return
 	
 	print("Initializing Steam...")
-	SteamManager.initialize_steam()
-	steam_initialized = true
-	steam_ready.emit()
-	print("Steam initialized!")
+	steam_initialized = SteamManager.initialize_steam()
+	if steam_initialized:
+		steam_ready.emit()
+		print("Steam initialized!")
+	else: 
+		print("Failed to initialize Steam")
+
 
 func start_singleplayer():
 	current_game_mode = GameMode.SINGLEPLAYER

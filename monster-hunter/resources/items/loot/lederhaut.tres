@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://cj8e8euayanqw"]
+
+[ext_resource type="Script" uid="uid://cgxgcqb3fxaa8" path="res://scripts/components/InventoryComponent/item.gd" id="1_r5nlp"]
+
+[sub_resource type="Gradient" id="Gradient_r5nlp"]
+offsets = PackedFloat32Array(0, 0.2, 0.6, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.8666667, 0.3254902, 0.8666667, 1, 0.6, 0.827451, 0.6, 1, 0, 0, 0, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_b85p3"]
+gradient = SubResource("Gradient_r5nlp")
+fill_to = Vector2(1, 1)
+
+[resource]
+script = ExtResource("1_r5nlp")
+item_id = "1"
+item_name = "Lederhaut"
+description = "simple mosnter drop"
+item_type = 1
+icon = SubResource("GradientTexture2D_b85p3")
+sell_price = 1
+metadata/_custom_type_script = "uid://cgxgcqb3fxaa8"

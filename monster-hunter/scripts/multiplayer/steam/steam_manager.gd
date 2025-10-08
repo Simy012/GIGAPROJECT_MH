@@ -21,8 +21,10 @@ func initialize_steam():
 	print("Did Steam Initialize?: %s " % initialize_response)
 	
 	if initialize_response['status'] > 0:
-		print("Failed to init Steam! Shutting down. %s" % initialize_response)
-		get_tree().quit()
+		print("Failed to init Steam! Response: %s"% initialize_response)
+		MultiplayerManager.host_mode_enabled = false
+		MultiplayerManager.multiplayer_mode_enabled = false
+		return false
 		
 	is_owned = Steam.isSubscribed()
 	steam_id = Steam.getSteamID()
@@ -32,4 +34,10 @@ func initialize_steam():
 	
 	if is_owned == false:
 		print("User does not own game!")
-		get_tree().quit()
+		MultiplayerManager.host_mode_enabled = false
+		MultiplayerManager.multiplayer_mode_enabled = false
+		return false
+	
+	MultiplayerManager.host_mode_enabled = true
+	MultiplayerManager.multiplayer_mode_enabled = true
+	return true
