@@ -17,16 +17,17 @@ class_name Player
 
 var is_local_player: bool = false
 
-func _ready():
+
+func setup_player():
 	# Prüfe ob dieser Player uns gehört
 	is_local_player = is_multiplayer_authority()
 	
 	if is_local_player:
 		print("Local player initialized: %s" % player_id)
-		setup_local_player()
+		_setup_local_player()
 	else:
 		print("Remote player initialized: %s" % player_id)
-		setup_remote_player()
+		_setup_remote_player()
 	
 	# Components initialisieren
 	if movement_component:
@@ -35,7 +36,7 @@ func _ready():
 	if status_component:
 		status_component.player = self
 
-func setup_local_player():
+func _setup_local_player():
 	# Kamera für lokalen Spieler aktivieren
 	if camera_component:
 		camera_component.set_current_camera(true)
@@ -44,7 +45,7 @@ func setup_local_player():
 	if input_component:
 		input_component.enabled = true
 
-func setup_remote_player():
+func _setup_remote_player():
 	# Kamera für andere Spieler deaktivieren
 	if camera_component:
 		camera_component.set_current_camera(false)
@@ -57,7 +58,8 @@ func setup_remote_player():
 func _physics_process(delta):
 	# Nur Authority verarbeitet Physics
 	if not multiplayer.is_server():
-		print("My Multiplayer name: ",name, "  multiplayer authority ID:", get_multiplayer_authority())
+		print("My Multiplayer name: ",name, "  PlayerNode multiplayer authority ID:", get_multiplayer_authority())
+		print("Meine Multiplayer ID ist: ", multiplayer.get_unique_id())
 		return
 	
 	# Input holen

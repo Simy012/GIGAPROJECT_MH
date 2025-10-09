@@ -109,10 +109,10 @@ func _on_lobby_kicked(lobby_id: int, lobby_owner_id: int, reason: int):
 
 
 
-func _add_player_to_game(id: int):
+func _add_player_to_game(peer_id: int):
 	if not multiplayer.is_server():
 		return
-	GameManager._add_player_to_game(id)
+	GameManager._add_player_to_game(peer_id)
 
 
 func _del_player(id: int):
