@@ -5,13 +5,19 @@ signal item_added(item: Item, quantity: int)
 signal item_removed(item: Item, quantity: int)
 signal inventory_changed()
 
-var items: Array[ItemStack] = [] # Unendliches Array von ItemStacks
+var items: Array[ItemStack] = []
 
 #Für Testdaten
 func _ready():
 	print("Item hinzufügen")
 	var lederhaut: Item = preload("res://resources/items/loot/lederhaut.tres")
 	add_item(lederhaut,13)
+	var zahn: Item = preload("res://resources/items/loot/zahn.tres")
+	add_item(zahn,25)
+	var dual_blades: Item = preload("res://resources/items/weapon/dual_blades.tres")
+	add_item(dual_blades,1)
+	
+	
 
 
 
@@ -40,7 +46,7 @@ func add_item(item: Item, quantity: int = 1) -> bool:
 	inventory_changed.emit()
 	return true
 
-func remove_item(item_id: String, quantity: int = 1) -> bool:
+func remove_item(item_to_remove: Item, quantity: int = 1) -> bool:
 	if quantity <= 0:
 		return false
 	
@@ -50,7 +56,7 @@ func remove_item(item_id: String, quantity: int = 1) -> bool:
 	# Durchsuche alle Stacks und entferne Items
 	for i in range(items.size() - 1, -1, -1):
 		var stack = items[i]
-		if stack.item.item_id == item_id:
+		if stack.item.item_id == item_to_remove.item_id:
 			removed_item = stack.item
 			var removed = stack.remove(remaining)
 			remaining -= removed

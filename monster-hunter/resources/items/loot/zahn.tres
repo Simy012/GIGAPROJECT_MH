@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://dt2200bgny55h"]
+
+[ext_resource type="Script" uid="uid://cgxgcqb3fxaa8" path="res://scripts/components/InventoryComponent/item.gd" id="1_yao1l"]
+
+[sub_resource type="Gradient" id="Gradient_yao1l"]
+offsets = PackedFloat32Array(0, 0.48666668, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.48666668, 0.48666668, 0.48666668, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ou8wa"]
+gradient = SubResource("Gradient_yao1l")
+
+[resource]
+script = ExtResource("1_yao1l")
+item_id = "2"
+item_name = "Zahn"
+description = "Epischer Zahn"
+rarity = 3
+icon = SubResource("GradientTexture2D_ou8wa")
+metadata/_custom_type_script = "uid://cgxgcqb3fxaa8"

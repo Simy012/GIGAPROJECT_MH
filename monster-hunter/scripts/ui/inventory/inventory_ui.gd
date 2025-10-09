@@ -6,7 +6,8 @@ signal inventory_closed
 
 @export var inventory: Inventory
 @export var grid_container: GridContainer
-@export var filter_buttons: OptionButton
+@export var filter_type_button: OptionButton
+@export var filter_rarity_button: OptionButton
 var item_slot_scene: PackedScene = preload(GlobalData.ITEM_SLOT_SCENE)
 
 enum FilterType {
@@ -17,7 +18,20 @@ enum FilterType {
 	CONSUMABLES
 }
 
-var current_filter: FilterType = FilterType.ALL
+enum FilterRarity {
+	ALL,
+	COMMON,
+	UNCOMMON,
+	RARE,
+	EPIC,
+	LEGENDARY
+}
+
+
+
+var current_type_filter: FilterType = FilterType.ALL
+var current_rarity_filter: FilterRarity = FilterRarity.ALL
+
 var item_slots: Array[Control] = []
 
 func _ready() -> void:
@@ -25,23 +39,9 @@ func _ready() -> void:
 	inventory_closed.connect(on_inventory_closed)
 	if inventory:
 		inventory.inventory_changed.connect(_on_inventory_changed)
-		setup_filter_buttons()
 		refresh_ui()
 
-func setup_filter_buttons() -> void:
-	if not filter_buttons:
-		return
-	
-	var filters = ["All", "Resources", "Weapons", "Armor", "Consumables"]
-	for i in filters.size():
-		var btn = Button.new()
-		btn.text = filters[i]
-		btn.pressed.connect(_on_filter_pressed.bind(i))
-		filter_buttons.add_child(btn)
 
-func _on_filter_pressed(filter: int) -> void:
-	current_filter = filter as FilterType
-	refresh_ui()
 
 func refresh_ui() -> void:
 	clear_slots()
@@ -57,25 +57,51 @@ func refresh_ui() -> void:
 func get_filtered_items() -> Array[ItemStack]:
 	var all_items = inventory.get_all_items()
 	
-	if current_filter == FilterType.ALL:
+	if current_type_filter == FilterType.ALL and current_rarity_filter == FilterRarity.ALL:
 		return all_items
 	
 	var filtered: Array[ItemStack] = []
+
 	for stack in all_items:
-		var matches = false
-		match current_filter:
-			FilterType.RESOURCES:
-				matches = stack.item.item_type == Item.ItemType.RESOURCE or \
-						  stack.item.item_type == Item.ItemType.MATERIAL
-			FilterType.WEAPONS:
-				matches = stack.item.item_type == Item.ItemType.WEAPON
-			FilterType.ARMOR:
-				matches = stack.item.item_type == Item.ItemType.ARMOR
-			FilterType.CONSUMABLES:
-				matches = stack.item.item_type == Item.ItemType.CONSUMABLE
+		var item = stack.item
 		
-		if matches:
-			filtered.append(stack)
+		# === Typ-Filter ===
+		var type_matches := false
+		match current_type_filter:
+			FilterType.ALL:
+				type_matches = true
+			FilterType.RESOURCES:
+				type_matches = item.item_type == Item.ItemType.RESOURCE
+			FilterType.WEAPONS:
+				type_matches = item.item_type == Item.ItemType.WEAPON
+			FilterType.ARMOR:
+				type_matches = item.item_type == Item.ItemType.ARMOR
+			FilterType.CONSUMABLES:
+				type_matches = item.item_type == Item.ItemType.CONSUMABLE
+		
+		if not type_matches:
+			continue
+		
+		# === Rarity-Filter ===
+		var rarity_matches := false
+		match current_rarity_filter:
+			FilterRarity.ALL:
+				rarity_matches = true
+			FilterRarity.COMMON:
+				rarity_matches = item.rarity == Item.Rarity.COMMON
+			FilterRarity.UNCOMMON:
+				rarity_matches = item.rarity == Item.Rarity.UNCOMMON
+			FilterRarity.RARE:
+				rarity_matches = item.rarity == Item.Rarity.RARE
+			FilterRarity.EPIC:
+				rarity_matches = item.rarity == Item.Rarity.EPIC
+			FilterRarity.LEGENDARY:
+				rarity_matches = item.rarity == Item.Rarity.LEGENDARY
+		
+		if not rarity_matches:
+			continue
+		
+		filtered.append(stack)
 	
 	return filtered
 
@@ -102,23 +128,44 @@ func _on_inventory_changed() -> void:
 
 func on_inventory_opened():
 	visible = true
+	current_type_filter = FilterType.ALL
 	refresh_ui()
 
 func on_inventory_closed():
 	visible = false
 
 
-func _on_option_button_item_selected(index):
-	match filter_buttons.get_item_text(index):
+func _on_filter_type_selected(index):
+	match filter_type_button.get_item_text(index):
 		"All":
-			current_filter = FilterType.ALL
+			current_type_filter = FilterType.ALL
 		"Resources":
-			current_filter = FilterType.RESOURCES
+			current_type_filter = FilterType.RESOURCES
 		"Weapons":
-			current_filter = FilterType.WEAPONS
+			current_type_filter = FilterType.WEAPONS
 		"Armors":
-			current_filter = FilterType.ARMOR
+			current_type_filter = FilterType.ARMOR
 		_:
-			current_filter = FilterType.ALL
-	print("Set Filter to: %s" % current_filter)
+			current_type_filter = FilterType.ALL
+	print("Set Type Filter to: %s" % current_type_filter)
+	refresh_ui()
+
+
+func _on_filter_rarity_selected(index):
+	match filter_rarity_button.get_item_text(index):
+		"All":
+			current_rarity_filter = FilterRarity.ALL
+		"Common":
+			current_rarity_filter = FilterRarity.COMMON
+		"Uncommon":
+			current_rarity_filter = FilterRarity.UNCOMMON
+		"Rare":
+			current_rarity_filter = FilterRarity.RARE
+		"Epic":
+			current_rarity_filter = FilterRarity.EPIC
+		"Legendary":
+			current_rarity_filter = FilterRarity.LEGENDARY
+		_:
+			current_rarity_filter = FilterRarity.ALL
+	print("Set Rarity Filter to: %s" % current_rarity_filter)
 	refresh_ui()

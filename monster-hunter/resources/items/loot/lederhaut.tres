@@ -16,7 +16,6 @@ script = ExtResource("1_r5nlp")
 item_id = "1"
 item_name = "Lederhaut"
 description = "simple mosnter drop"
-item_type = 1
 icon = SubResource("GradientTexture2D_b85p3")
 sell_price = 1
 metadata/_custom_type_script = "uid://cgxgcqb3fxaa8"

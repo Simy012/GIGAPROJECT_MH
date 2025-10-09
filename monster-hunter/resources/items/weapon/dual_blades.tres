@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=4 format=3 uid="uid://c504lt16q5alb"]
+
+[ext_resource type="Script" uid="uid://cl4qp4qbppui7" path="res://scripts/components/InventoryComponent/weapon_item.gd" id="1_dv3kx"]
+
+[sub_resource type="Gradient" id="Gradient_dv3kx"]
+offsets = PackedFloat32Array(0, 0.50666666, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_u1wqg"]
+gradient = SubResource("Gradient_dv3kx")
+
+[resource]
+script = ExtResource("1_dv3kx")
+weapon_type = 4
+attack_power = 80
+item_id = "3"
+item_name = "Dual_Snippers"
+description = "sharp and fast"
+item_type = 1
+rarity = 2
+icon = SubResource("GradientTexture1D_u1wqg")
+is_tradeable = false
+metadata/_custom_type_script = "uid://cl4qp4qbppui7"

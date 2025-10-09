@@ -3,7 +3,6 @@ extends Resource
 
 enum ItemType {
 	RESOURCE,
-	MATERIAL,
 	WEAPON,
 	ARMOR,
 	CONSUMABLE,
@@ -28,9 +27,6 @@ enum Rarity {
 @export var max_stack_size: int = 999
 @export var is_tradeable: bool = true
 @export var sell_price: int = 0
-
-# Zusätzliche Metadaten
-@export var tags: Array[String] = []
 
 func _init() -> void:
 	pass
