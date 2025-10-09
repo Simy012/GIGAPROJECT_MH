@@ -65,6 +65,9 @@ func _physics_process(delta):
 	# Input holen
 	var input_data = input_component.input_data
 	
+	if get_multiplayer_authority() != 1:
+		print("CLient INPUT DATA BEI HOST IST: ", input_data)
+	
 	if movement_component:
 		movement_component.process_movement(delta, input_data)
 	
