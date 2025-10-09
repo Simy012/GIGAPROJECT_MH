@@ -57,6 +57,7 @@ func setup_remote_player():
 func _physics_process(delta):
 	# Nur Authority verarbeitet Physics
 	if not multiplayer.is_server():
+		print("My Multiplayer name: ",name, "  multiplayer authority ID:", get_multiplayer_authority())
 		return
 	
 	# Input holen

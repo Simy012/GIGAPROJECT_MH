@@ -11,6 +11,7 @@ func _ready():
 
 
 func _on_player_spawned(player: Player):
+	player.set_multiplayer_authority(int(player.name))
 	EventHandler.player_added.emit(player)
 	
 
