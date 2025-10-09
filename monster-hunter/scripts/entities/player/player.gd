@@ -6,13 +6,14 @@ class_name Player
 # Components
 @export var movement_component: MovementComponent
 @export var status_component: StatusEffectComponent
-@export var input_component: InputComponent
+#@export var input_component: InputComponent
 @export var camera_component: Camera3DComponent
 @export var inventory_component: Inventory
 @export var equipment_manager_component: EquipmentManager
 @onready var multiplayer_sync: MultiplayerSynchronizer = $CharacterSync
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var hitbox_component: HitboxComponent = $HitboxComponent
+@onready var player_input = $PlayerInput
 
 
 var is_local_player: bool = false
@@ -42,8 +43,8 @@ func _setup_local_player():
 		camera_component.set_current_camera(true)
 	
 	# Input aktivieren
-	if input_component:
-		input_component.enabled = true
+	if player_input:
+		player_input.enabled = true
 
 func _setup_remote_player():
 	# Kamera für andere Spieler deaktivieren
@@ -51,8 +52,8 @@ func _setup_remote_player():
 		camera_component.set_current_camera(false)
 	
 	# Input deaktivieren
-	if input_component:
-		input_component.enabled = false
+	if player_input:
+		player_input.enabled = false
 
 
 func _physics_process(delta):
@@ -63,7 +64,7 @@ func _physics_process(delta):
 		return
 	
 	# Input holen
-	var input_data = input_component.input_data
+	var input_data = player_input.input_data
 	
 	if get_multiplayer_authority() != 1:
 		print("CLient INPUT DATA BEI HOST IST: ", input_data)
