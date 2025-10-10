@@ -3,13 +3,15 @@ extends MultiplayerSynchronizer
 
 var enabled: bool = false
 
-@export var input_data: Dictionary
+@export var movement_component: MovementComponent
+@export var move_direction: Vector3
+@export var target_angle: float 
 
 func _process(delta):
 	if not enabled:
 		return
 	
-	input_data = {}
+	var input_data: Dictionary = {}
 	
 	# Movement Direction
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
@@ -20,3 +22,7 @@ func _process(delta):
 	
 	# Jump
 	input_data["jump"] = Input.is_action_just_pressed("jump")
+	
+	# Berechne move_direction:
+	move_direction = movement_component.get_movement_direction(input_data)
+	target_angle = movement_component.get_rotation_direction(move_direction)

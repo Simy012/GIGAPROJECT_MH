@@ -64,13 +64,14 @@ func _physics_process(delta):
 		return
 	
 	# Input holen
-	var input_data = player_input.input_data
+	var move_direction = player_input.move_direction
+	var target_angle = player_input.target_angle
 	
 	if get_multiplayer_authority() != 1:
-		print("CLient INPUT DATA BEI HOST IST: ", input_data)
+		print("CLient INPUT DATA BEI HOST IST: ", move_direction)
 	
 	if movement_component:
-		movement_component.process_movement(delta, input_data)
+		movement_component.process_movement(delta, move_direction, target_angle)
 	
 	if camera_component:
 		camera_component.process_camera_movement(delta)

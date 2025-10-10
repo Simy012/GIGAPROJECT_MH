@@ -30,9 +30,12 @@ properties/3/spawn = true
 properties/3/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xy2vv"]
-properties/0/path = NodePath("PlayerInput:input_data")
+properties/0/path = NodePath("PlayerInput:move_direction")
 properties/0/spawn = true
 properties/0/replication_mode = 1
+properties/1/path = NodePath("PlayerInput:target_angle")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("movement_component", "status_component", "camera_component", "inventory_component", "equipment_manager_component")]
 collision_layer = 2
@@ -65,9 +68,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4703484e-08, 0.8544715)
 [node name="ServerSynchonizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_j0oqr")
 
-[node name="PlayerInput" type="MultiplayerSynchronizer" parent="."]
+[node name="PlayerInput" type="MultiplayerSynchronizer" parent="." node_paths=PackedStringArray("movement_component")]
 replication_config = SubResource("SceneReplicationConfig_xy2vv")
 script = ExtResource("4_7wli1")
+movement_component = NodePath("../MovementComponent")
 
 [node name="MovementComponent" type="Node" parent="." node_paths=PackedStringArray("character", "camera_component", "status_component", "_skin")]
 script = ExtResource("3_bjvvg")
