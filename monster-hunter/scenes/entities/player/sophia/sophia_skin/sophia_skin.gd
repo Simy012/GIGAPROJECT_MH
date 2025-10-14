@@ -13,7 +13,9 @@ var run_tilt = 0.0 : set = _set_run_tilt
 @onready var closed_eyes_timer = %ClosedEyesTimer
 @onready var eye_mat = $sophia/rig/Skeleton3D/Sophia.get("surface_material_override/2")
 
+
 func _ready():
+	idle()
 	blink_timer.connect("timeout", func():
 		eye_mat.set("uv1_offset", Vector3(0.0, 0.5, 0.0))
 		closed_eyes_timer.start(0.2)
@@ -66,5 +68,7 @@ func animate(action_id: StringName):
 			jump()
 		"IDLE":
 			idle()
+		"FALL":
+			fall()
 		_:
 			idle()

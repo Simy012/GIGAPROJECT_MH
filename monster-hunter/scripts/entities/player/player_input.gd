@@ -24,5 +24,5 @@ func _process(delta):
 	input_data["jump"] = Input.is_action_just_pressed("jump")
 	
 	# Berechne move_direction:
-	move_direction = movement_component.get_movement_direction(input_data)
+	move_direction = movement_component.get_movement_direction(delta, input_data)
 	target_angle = movement_component.get_rotation_direction(move_direction)

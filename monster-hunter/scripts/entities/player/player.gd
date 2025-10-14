@@ -6,7 +6,6 @@ class_name Player
 # Components
 @export var movement_component: MovementComponent
 @export var status_component: StatusEffectComponent
-#@export var input_component: InputComponent
 @export var camera_component: Camera3DComponent
 @export var inventory_component: Inventory
 @export var equipment_manager_component: EquipmentManager
@@ -45,6 +44,9 @@ func _setup_local_player():
 	# Input aktivieren
 	if player_input:
 		player_input.enabled = true
+	
+	if movement_component:
+		movement_component.set_process(true)
 
 func _setup_remote_player():
 	# Kamera für andere Spieler deaktivieren
@@ -54,7 +56,9 @@ func _setup_remote_player():
 	# Input deaktivieren
 	if player_input:
 		player_input.enabled = false
-
+	
+	if movement_component:
+		movement_component.set_process(false)
 
 func _physics_process(delta):
 	# Nur Authority verarbeitet Physics
