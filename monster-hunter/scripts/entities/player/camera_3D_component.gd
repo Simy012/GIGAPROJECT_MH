@@ -9,7 +9,7 @@ class_name Camera3DComponent
 var _camera_input_direction := Vector2.ZERO
 
 
-func process_camera_movement(delta):
+func _process(delta):
 	rotation.x += -_camera_input_direction.y * delta
 	rotation.x = clamp(rotation.x, tilt_lower_limit, tilt_upper_limit)
 	rotation.y -= _camera_input_direction.x * delta

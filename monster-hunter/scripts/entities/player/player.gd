@@ -40,6 +40,7 @@ func _setup_local_player():
 	# Kamera für lokalen Spieler aktivieren
 	if camera_component:
 		camera_component.set_current_camera(true)
+		camera_component.set_process(true)
 	
 	# Input aktivieren
 	if player_input:
@@ -52,6 +53,7 @@ func _setup_remote_player():
 	# Kamera für andere Spieler deaktivieren
 	if camera_component:
 		camera_component.set_current_camera(false)
+		camera_component.set_process(false)
 	
 	# Input deaktivieren
 	if player_input:
@@ -63,8 +65,6 @@ func _setup_remote_player():
 func _physics_process(delta):
 	# Nur Authority verarbeitet Physics
 	if not multiplayer.is_server():
-		print("My Multiplayer name: ",name, "  PlayerNode multiplayer authority ID:", get_multiplayer_authority())
-		print("Meine Multiplayer ID ist: ", multiplayer.get_unique_id())
 		return
 	
 	# Input holen
