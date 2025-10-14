@@ -62,6 +62,7 @@ func _setup_remote_player():
 	if movement_component:
 		movement_component.set_process(false)
 
+
 func _physics_process(delta):
 	# Nur Authority verarbeitet Physics
 	if not multiplayer.is_server():
@@ -76,9 +77,7 @@ func _physics_process(delta):
 	
 	if movement_component:
 		movement_component.process_movement(delta, move_direction, target_angle)
-	
-	if camera_component:
-		camera_component.process_camera_movement(delta)
+
 
 
 func _unhandled_input(event):
