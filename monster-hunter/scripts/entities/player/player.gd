@@ -20,9 +20,10 @@ var is_local_player: bool = false
 
 func _ready():
 	if multiplayer.is_server():
-		server_synchronizer.enabled = true
+		server_synchronizer.set_multiplayer_authority(get_multiplayer_authority())
 	else:
-		server_synchronizer.enabled = false
+		# Clients dürfen nicht synchronisieren
+		server_synchronizer.set_multiplayer_authority(1)  # 1 = Server
 
 func setup_player():
 	# Prüfe ob dieser Player uns gehört
