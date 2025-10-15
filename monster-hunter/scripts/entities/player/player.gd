@@ -77,7 +77,7 @@ func _physics_process(delta):
 	
 	if get_multiplayer_authority() != 1:
 		print("CLient INPUT DATA BEI HOST IST: ", move_direction)
-		print("PropertySyncer Authority: ",$ServerSynchonizer.get_multiplayer_authority())
+		print("PropertySyncer Authority: ",$ServerSynchronizer.get_multiplayer_authority())
 	
 	if movement_component:
 		movement_component.process_movement(delta, move_direction, target_angle)
