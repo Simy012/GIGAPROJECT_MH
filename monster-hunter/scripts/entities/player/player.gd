@@ -13,10 +13,16 @@ class_name Player
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var hitbox_component: HitboxComponent = $HitboxComponent
 @onready var player_input = $PlayerInput
+@onready var server_synchronizer = $ServerSynchronizer
 
 
 var is_local_player: bool = false
 
+func _ready():
+	if multiplayer.is_server():
+		server_synchronizer.enabled = true
+	else:
+		server_synchronizer.enabled = false
 
 func setup_player():
 	# Prüfe ob dieser Player uns gehört
@@ -70,6 +76,7 @@ func _physics_process(delta):
 	
 	if get_multiplayer_authority() != 1:
 		print("CLient INPUT DATA BEI HOST IST: ", move_direction)
+		print("PropertySyncer Authority: ",$ServerSynchonizer.get_multiplayer_authority())
 	
 	if movement_component:
 		movement_component.process_movement(delta, move_direction, target_angle)
