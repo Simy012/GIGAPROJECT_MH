@@ -19,11 +19,7 @@ class_name Player
 var is_local_player: bool = false
 
 func _ready():
-	if multiplayer.is_server():
-		server_synchronizer.set_multiplayer_authority(get_multiplayer_authority())
-	else:
-		# Clients dürfen nicht synchronisieren
-		server_synchronizer.set_multiplayer_authority(1)  # 1 = Server
+	pass
 
 func setup_player():
 	# Prüfe ob dieser Player uns gehört
@@ -42,6 +38,12 @@ func setup_player():
 	
 	if status_component:
 		status_component.player = self
+	
+	if multiplayer.is_server():
+		server_synchronizer.set_multiplayer_authority(get_multiplayer_authority())
+	else:
+		# Clients dürfen nicht synchronisieren
+		server_synchronizer.set_multiplayer_authority(1)  # 1 = Server
 
 func _setup_local_player():
 	# Kamera für lokalen Spieler aktivieren
@@ -52,6 +54,12 @@ func _setup_local_player():
 	# Input aktivieren
 	if player_input:
 		player_input.enabled = true
+	
+	if multiplayer.is_server():
+		server_synchronizer.set_multiplayer_authority(get_multiplayer_authority())
+	else:
+		# Clients dürfen nicht synchronisieren
+		server_synchronizer.set_multiplayer_authority(1)  # 1 = Server
 
 
 func _setup_remote_player():
