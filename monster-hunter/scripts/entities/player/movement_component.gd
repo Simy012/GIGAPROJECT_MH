@@ -44,6 +44,9 @@ func process_movement(delta: float, move_direction: Vector3, target_angle: float
 	
 	_body.global_rotation.y = lerp_angle(_body.global_rotation.y, target_angle, rotation_speed * delta)
 	
+	
+	if get_multiplayer_authority() != 1:
+		print("Move Direction vor move_slide: ", character.velocity)
 	# --- Bewegung anwenden ---
 	character.move_and_slide()
 	
@@ -58,8 +61,7 @@ func process_movement(delta: float, move_direction: Vector3, target_angle: float
 			current_state = "RUN"
 		else:
 			current_state = "IDLE"
-	
-	animate_player()
+
 
 
 func get_movement_direction(delta: float, input_data: Dictionary) -> Vector3:

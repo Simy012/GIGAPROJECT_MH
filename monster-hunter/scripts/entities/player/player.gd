@@ -45,9 +45,7 @@ func _setup_local_player():
 	# Input aktivieren
 	if player_input:
 		player_input.enabled = true
-	
-	if movement_component:
-		movement_component.set_process(true)
+
 
 func _setup_remote_player():
 	# Kamera für andere Spieler deaktivieren
@@ -58,9 +56,7 @@ func _setup_remote_player():
 	# Input deaktivieren
 	if player_input:
 		player_input.enabled = false
-	
-	if movement_component:
-		movement_component.set_process(false)
+
 
 
 func _physics_process(delta):

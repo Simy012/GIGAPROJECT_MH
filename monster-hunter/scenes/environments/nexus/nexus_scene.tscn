@@ -47,8 +47,11 @@ transform = Transform3D(4.393386, 0, 0, 0, 0.2381377, 0, 0, 0, 30.78301, -0.0180
 shape = SubResource("BoxShape3D_6typc")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 23.335732, -23.688541)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 23.335732, -17.84705)
 light_color = Color(1, 1, 0.7176471, 1)
+light_energy = 1.704
+light_indirect_energy = 2.504
+light_volumetric_fog_energy = 4.638
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
 collision_mask = 0
