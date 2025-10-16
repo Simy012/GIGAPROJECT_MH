@@ -4,7 +4,6 @@ class_name Player
 @export var player_id: int:
 	set(id):
 		player_id = id
-		player_input.set_multiplayer_authority(id)
 
 # Components
 @export var movement_component: MovementComponent
@@ -41,7 +40,10 @@ func setup_player():
 	
 	if status_component:
 		status_component.player = self
-
+	
+	if player_input:
+		player_input.set_multiplayer_authority(player_id)
+	
 
 func _setup_local_player():
 	# Kamera für lokalen Spieler aktivieren
