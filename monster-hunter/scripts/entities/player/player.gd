@@ -1,7 +1,10 @@
 extends CharacterBody3D
 class_name Player
 
-@export var player_id: int
+@export var player_id: int:
+	set(id):
+		player_id = id
+		player_input.set_multiplayer_authority(id)
 
 # Components
 @export var movement_component: MovementComponent
@@ -49,7 +52,6 @@ func _setup_local_player():
 	# Input aktivieren
 	if player_input:
 		player_input.enabled = true
-		player_input.set_multiplayer_authority(player_id)
 
 
 
@@ -62,7 +64,6 @@ func _setup_remote_player():
 	# Input deaktivieren
 	if player_input:
 		player_input.enabled = false
-		player_input.set_multiplayer_authority(player_id)
 
 
 func _physics_process(delta):
