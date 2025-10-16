@@ -62,7 +62,7 @@ func _setup_remote_player():
 	# Input deaktivieren
 	if player_input:
 		player_input.enabled = false
-
+		player_input.set_multiplayer_authority(player_id)
 
 
 func _physics_process(delta):

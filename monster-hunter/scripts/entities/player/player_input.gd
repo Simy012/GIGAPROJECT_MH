@@ -26,3 +26,5 @@ func _process(delta):
 	# Berechne move_direction:
 	move_direction = movement_component.get_movement_direction(delta, input_data)
 	target_angle = movement_component.get_rotation_direction(move_direction)
+	
+	print("PlayerID: ",get_multiplayer_authority()," MoveDirection: ", move_direction)
