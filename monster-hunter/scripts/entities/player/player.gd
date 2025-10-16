@@ -49,6 +49,7 @@ func _setup_local_player():
 	# Input aktivieren
 	if player_input:
 		player_input.enabled = true
+		player_input.set_multiplayer_authority(player_id)
 
 
 
@@ -73,7 +74,7 @@ func _physics_process(delta):
 	var move_direction = player_input.move_direction
 	var target_angle = player_input.target_angle
 	
-	if get_multiplayer_authority() != 1:
+	if player_id != 1:
 		print("CLient INPUT DATA BEI HOST IST: ", move_direction)
 		print("PropertySyncer Authority: ",$ServerSynchronizer.get_multiplayer_authority())
 	
