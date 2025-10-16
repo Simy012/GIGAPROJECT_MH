@@ -9,7 +9,6 @@ var enabled: bool = false
 
 
 func _process(delta):
-	print("playerInput multi authority: ",get_multiplayer_authority(), " and mutlitplayer unique id: ", multiplayer.get_unique_id())
 	if not enabled:
 		return
 	

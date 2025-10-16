@@ -44,9 +44,6 @@ func process_movement(delta: float, move_direction: Vector3, target_angle: float
 	
 	_body.global_rotation.y = lerp_angle(_body.global_rotation.y, target_angle, rotation_speed * delta)
 	
-	
-	if get_multiplayer_authority() != 1:
-		print("Move Direction vor move_slide: ", character.velocity)
 	# --- Bewegung anwenden ---
 	character.move_and_slide()
 	
@@ -95,11 +92,13 @@ func get_movement_direction(delta: float, input_data: Dictionary) -> Vector3:
 	# --- Sprung ---
 	var is_starting_jump: bool = false
 	if "jump" in input_data and input_data["jump"] and character.is_on_floor():
+		print("WANT TO JUMP")
 		is_starting_jump = true
 		vertical_velocity = jump_force
 	
 	# --- Schwerkraft ---
 	if not character.is_on_floor():
+		print("player: ",multiplayer.get_unique_id(), " is in air")
 		vertical_velocity -= gravity * delta
 	else:
 		# Wenn auf Boden, Y-Velocity nicht zu groß
