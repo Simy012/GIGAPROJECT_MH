@@ -117,8 +117,6 @@ func _add_player_to_game(id: int):
 	player_to_add.player_id = id
 	player_to_add.name = str(id)
 	
-	player_to_add.set_multiplayer_authority(id)
-	
 	players_spawn_node.add_child(player_to_add, true)
 	EventHandler.player_added.emit(player_to_add)
 	print("Player %s spawned successfully!" % id)

@@ -18,9 +18,8 @@ func _on_player_despawned(player: Player):
 	EventHandler.player_removed.emit(player)
 
 func _on_player_spawned_event(player):
-	player.set_multiplayer_authority(int(player.name))
 	player.setup_player()
-	if player.get_multiplayer_authority() == get_multiplayer_authority():
+	if int(player.name) == get_multiplayer_authority():
 		ui_handler._setup_player_ui(player)
 
 func _on_player_despawned_event(player: Player):
