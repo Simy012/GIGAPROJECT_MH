@@ -32,8 +32,8 @@ func _ready():
 func _process(delta):
 	animate_player()
 
-func move(delta: float, input_data: Dictionary):
-	var move_direction = get_movement_direction(delta, input_data)
+func move(delta: float, input_data: Dictionary, camera_basis: Basis):
+	var move_direction = get_movement_direction(delta, input_data, camera_basis)
 	var target_angle = get_rotation_direction(move_direction)
 	
 	process_movement(delta, move_direction, target_angle)
@@ -68,7 +68,7 @@ func process_movement(delta: float, move_direction: Vector3, target_angle: float
 
 
 
-func get_movement_direction(delta: float, input_data: Dictionary) -> Vector3:
+func get_movement_direction(delta: float, input_data: Dictionary, camera_basis: Basis) -> Vector3:
 	if is_stunned():
 		# Wenn betäubt, kein Input und kein Move
 		input_data = {}
@@ -81,12 +81,11 @@ func get_movement_direction(delta: float, input_data: Dictionary) -> Vector3:
 	
 	# --- Kamera-Relative Richtung berechnen ---
 	var horizontal_direction := Vector3.ZERO
-	if camera_component and camera_component.camera:
-		var forward := camera_component.camera.global_basis.z
-		var right := camera_component.camera.global_basis.x
-		horizontal_direction = forward * input_dir.y + right * input_dir.x
-		horizontal_direction.y = 0.0
-		horizontal_direction = horizontal_direction.normalized()
+	var forward := camera_basis.z
+	var right := camera_basis.x
+	horizontal_direction = forward * input_dir.y + right * input_dir.x
+	horizontal_direction.y = 0.0
+	horizontal_direction = horizontal_direction.normalized()
 	
 	var applying_speed = move_speed
 	if "sprint" in input_data:
