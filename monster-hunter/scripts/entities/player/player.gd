@@ -43,7 +43,6 @@ func setup_player():
 	
 	if player_input:
 		player_input.set_multiplayer_authority(player_id)
-	
 
 func _setup_local_player():
 	# Kamera für lokalen Spieler aktivieren

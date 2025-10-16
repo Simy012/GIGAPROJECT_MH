@@ -7,10 +7,9 @@ var enabled: bool = false
 @export var move_direction: Vector3
 @export var target_angle: float 
 
-func _ready():
-	set_process(get_multiplayer_authority() == multiplayer.get_unique_id())
 
 func _process(delta):
+	print("playerInput multi authority: ",get_multiplayer_authority(), " and mutlitplayer unique id: ", multiplayer.get_unique_id())
 	if not enabled:
 		return
 	
