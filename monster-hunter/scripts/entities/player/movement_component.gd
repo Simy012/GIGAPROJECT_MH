@@ -32,6 +32,13 @@ func _ready():
 func _process(delta):
 	animate_player()
 
+func move(delta: float, input_data: Dictionary):
+	var move_direction = get_movement_direction(delta, input_data)
+	var target_angle = get_rotation_direction(move_direction)
+	
+	process_movement(delta, move_direction, target_angle)
+
+
 # --- Movement Logik ---
 func process_movement(delta: float, move_direction: Vector3, target_angle: float):
 	

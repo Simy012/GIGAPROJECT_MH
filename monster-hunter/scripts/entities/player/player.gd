@@ -73,15 +73,14 @@ func _physics_process(delta):
 		return
 	
 	# Input holen
-	var move_direction = player_input.move_direction
-	var target_angle = player_input.target_angle
+	var input_data: Dictionary = player_input.input_data
 	
 	if player_id != 1:
-		print("CLient INPUT DATA BEI HOST IST: ", move_direction)
+		print("CLient INPUT DATA BEI HOST IST: ", input_data)
 		print("PropertySyncer Authority: ",$ServerSynchronizer.get_multiplayer_authority())
 	
 	if movement_component:
-		movement_component.process_movement(delta, move_direction, target_angle)
+		movement_component.move(delta, input_data)
 
 
 
