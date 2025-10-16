@@ -76,10 +76,6 @@ func _physics_process(delta):
 	var input_data: Dictionary = player_input.input_data
 	var camera_basis: Basis = player_input.camera_global_basis
 	
-	if player_id != 1:
-		print("CLient INPUT DATA BEI HOST IST: ", input_data)
-		print("PropertySyncer Authority: ",$ServerSynchronizer.get_multiplayer_authority())
-	
 	if movement_component:
 		movement_component.move(delta, input_data, camera_basis)
 
