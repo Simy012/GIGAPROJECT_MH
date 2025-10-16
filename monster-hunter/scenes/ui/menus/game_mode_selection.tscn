@@ -97,3 +97,22 @@ text = "Refresh"
 [node name="CloseButton" type="Button" parent="MultiplayerPanel/VBoxContainer"]
 layout_mode = 2
 text = "Close"
+
+[node name="EnetHostButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 499.0
+offset_right = 248.0
+offset_bottom = 530.0
+text = "Host via IP"
+
+[node name="EnetJoinButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 263.0
+offset_top = 499.0
+offset_right = 353.0
+offset_bottom = 530.0
+text = "Join Via IP"
+
+[connection signal="pressed" from="EnetHostButton" to="." method="_on_enet_host_button_pressed"]
+[connection signal="pressed" from="EnetJoinButton" to="." method="_on_enet_join_button_pressed"]

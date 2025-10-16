@@ -11,7 +11,6 @@ class_name Player
 @export var camera_component: Camera3DComponent
 @export var inventory_component: Inventory
 @export var equipment_manager_component: EquipmentManager
-@onready var multiplayer_sync: MultiplayerSynchronizer = $CharacterSync
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var hitbox_component: HitboxComponent = $HitboxComponent
 @onready var player_input = $PlayerInput

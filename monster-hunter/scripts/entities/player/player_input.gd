@@ -25,7 +25,3 @@ func _process(delta):
 	
 	# Jump
 	input_data["jump"] = Input.is_action_just_pressed("jump")
-	
-
-	
-	print("PlayerID: ",get_multiplayer_authority()," inputData: ", input_data)

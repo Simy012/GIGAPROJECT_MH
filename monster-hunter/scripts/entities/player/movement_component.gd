@@ -98,13 +98,11 @@ func get_movement_direction(delta: float, input_data: Dictionary, camera_basis: 
 	# --- Sprung ---
 	var is_starting_jump: bool = false
 	if "jump" in input_data and input_data["jump"] and character.is_on_floor():
-		print("WANT TO JUMP")
 		is_starting_jump = true
 		vertical_velocity = jump_force
 	
 	# --- Schwerkraft ---
 	if not character.is_on_floor():
-		print("player: ",multiplayer.get_unique_id(), " is in air")
 		vertical_velocity -= gravity * delta
 	else:
 		# Wenn auf Boden, Y-Velocity nicht zu groß

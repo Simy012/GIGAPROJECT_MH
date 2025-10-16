@@ -52,7 +52,8 @@ func _on_multiplayer_pressed():
 	_on_refresh_pressed()
 
 func _on_host_pressed():
-	print("Hosting Multiplayer Game...")
+	print("Hosting Steam Multiplayer Game...")
+	NetworkManager.set_network_type(NetworkManager.MULTIPLAYER_NETWORK_TYPE.STEAM)
 	GameManager.start_multiplayer_host()
 
 func _on_join_pressed():
@@ -60,6 +61,7 @@ func _on_join_pressed():
 		var selected_idx = lobby_list.get_selected_items()[0]
 		var lobby_id = lobby_list.get_item_metadata(selected_idx)
 		print("Joining lobby: ", lobby_id)
+		NetworkManager.set_network_type(NetworkManager.MULTIPLAYER_NETWORK_TYPE.STEAM)
 		GameManager.start_multiplayer_client(lobby_id)
 	else:
 		print("Bitte wähle eine Lobby aus!")
@@ -88,3 +90,15 @@ func _on_lobby_list_received(lobbies: Array):
 		var lobby_text = "%s - %s [%d/%d]" % [lobby_name, lobby_mode, num_members, max_members]
 		lobby_list.add_item(lobby_text)
 		lobby_list.set_item_metadata(lobby_list.item_count - 1, lobby_id)
+
+
+func _on_enet_host_button_pressed():
+	NetworkManager.set_network_type(NetworkManager.MULTIPLAYER_NETWORK_TYPE.ENET)
+	print("Start ENET Host")
+	GameManager.start_multiplayer_host()
+
+
+func _on_enet_join_button_pressed():
+	NetworkManager.set_network_type(NetworkManager.MULTIPLAYER_NETWORK_TYPE.ENET)
+	print("Join Enet Host")
+	GameManager.start_multiplayer_client(0)

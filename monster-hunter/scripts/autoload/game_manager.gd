@@ -69,7 +69,7 @@ func start_multiplayer_host():
 	print("Steam Network: Host started!")
 
 
-func start_multiplayer_client(lobby_id: int):
+func start_multiplayer_client(lobby_id: int = 0):
 	print("Joining Multiplayer as Client (Lobby: %s)..." % lobby_id)
 	current_game_mode = GameMode.MULTIPLAYER_CLIENT
 	game_mode_changed.emit(current_game_mode)

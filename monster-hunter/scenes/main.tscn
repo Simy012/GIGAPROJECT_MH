@@ -14,7 +14,7 @@ ui_handler = NodePath("UIHandler")
 [node name="NexusScene" parent="Level" instance=ExtResource("1_o5qli")]
 
 [node name="Players" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.77222776, 1.3741729, 0.76452255)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.290741, 5.386944, 10.645484)
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://dp27wfbklu6ap")

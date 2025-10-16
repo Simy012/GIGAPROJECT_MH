@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://7ulknriohtp5"]
+
+[ext_resource type="PackedScene" uid="uid://c26r5jvmaq76v" path="res://assets/entities/monster/gromp/gromp_unfinished.fbx" id="1_lbmq7"]
+[ext_resource type="Texture2D" uid="uid://bewbqrxgks5mu" path="res://assets/entities/monster/gromp/gromp_ahh_D.png" id="2_fxbbd"]
+[ext_resource type="Texture2D" uid="uid://byqukt0inxuy4" path="res://assets/entities/monster/gromp/Gromp_ahh_N.png" id="3_5bq7a"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mahut"]
+albedo_texture = ExtResource("2_fxbbd")
+normal_enabled = true
+normal_texture = ExtResource("3_5bq7a")
+
+[node name="gromp_unfinished" instance=ExtResource("1_lbmq7")]
+
+[node name="lp_001" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_mahut")
