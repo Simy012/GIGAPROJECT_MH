@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0c64x0dgua2v"]
+[gd_scene load_steps=7 format=3 uid="uid://b0c64x0dgua2v"]
 
 [ext_resource type="PackedScene" uid="uid://b8luj06lh5dhv" path="res://scenes/environments/nexus/nexus_scene.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://c0200cry40evy" path="res://scripts/main.gd" id="1_tefeu"]
 [ext_resource type="Script" uid="uid://dyrb1nuu4shig" path="res://scripts/ui/ui_handler.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://wrviritf6tr1" path="res://scenes/ui/inventory/inventory_gui.tscn" id="5_tbgi4"]
+[ext_resource type="PackedScene" uid="uid://clk4hivocvvws" path="res://scenes/ui/menus/ingame_menu.tscn" id="5_tefeu"]
+[ext_resource type="PackedScene" uid="uid://cm1615ixeur85" path="res://scenes/ui/quest/quest_menu.tscn" id="6_tefeu"]
 
 [node name="Main" type="Node3D" node_paths=PackedStringArray("ui_handler")]
 script = ExtResource("1_tefeu")
@@ -21,12 +23,19 @@ _spawnable_scenes = PackedStringArray("uid://dp27wfbklu6ap")
 spawn_path = NodePath("../Players")
 spawn_limit = 4
 
-[node name="UIHandler" type="CanvasLayer" parent="." node_paths=PackedStringArray("inventory_gui")]
+[node name="UIHandler" type="CanvasLayer" parent="." node_paths=PackedStringArray("inventory_gui", "ingame_menu", "quest_menu")]
 script = ExtResource("3_jyhfs")
 inventory_gui = NodePath("InventoryGui")
+ingame_menu = NodePath("IngameMenu")
+quest_menu = NodePath("QuestMenu")
 
 [node name="InventoryGui" parent="UIHandler" instance=ExtResource("5_tbgi4")]
 visible = false
+
+[node name="IngameMenu" parent="UIHandler" instance=ExtResource("5_tefeu")]
+visible = false
+
+[node name="QuestMenu" parent="UIHandler" instance=ExtResource("6_tefeu")]
 
 [connection signal="despawned" from="PlayerSpawner" to="." method="_on_player_despawned"]
 [connection signal="spawned" from="PlayerSpawner" to="." method="_on_player_spawned"]
