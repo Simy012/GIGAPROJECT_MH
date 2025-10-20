@@ -7,3 +7,7 @@ signal player_removed(player: Player)
 
 # UI Elements
 signal close_ingame_menu
+
+
+# Game Events
+signal save_game

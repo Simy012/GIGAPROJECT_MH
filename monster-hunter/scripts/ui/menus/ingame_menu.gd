@@ -13,13 +13,15 @@ func _on_save_button_pressed():
 
 
 func _on_settings_button_pressed():
+	# Hier child hinzuifügen mit neuen settnigs und dann escape event abfangen und erstmal nur zum ingame menü zurück
 	pass # Replace with function body.
 
 
 func _on_return_button_pressed():
 	save()
+	SceneTransition.change_scene(GlobalData.MAIN_MENU_SCENE)
 
 
 func save():
-	print("Save gamestate. Aktuell noch nicht implementiert")
+	EventHandler.save_game.emit()
 	pass
