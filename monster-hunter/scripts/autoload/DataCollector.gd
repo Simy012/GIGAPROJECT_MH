@@ -16,11 +16,18 @@ extends Node
 class_name MonsterHunterSaveCollector
 
 ## Referenzen zu Spiel-Systemen (werden automatisch gefunden)
-var player: Node
-var inventory_system: Node
+var player: Player
+var inventory_system: Inventory
 var quest_system: Node
 var weapon_system: Node
 var stats_system: Node
+
+func _ready():
+	EventHandler.local_player_registered.connect(_on_local_player_registered)
+
+
+func _on_local_player_registered(loc_player: Player):
+	player = loc_player
 
 
 ## ============================================================================
@@ -65,15 +72,9 @@ func _collect_metadata() -> Dictionary:
 	var level = 1
 	var playtime = 0.0
 	
-	# Versuche Charakter zu finden
-	if has_node("/root/Player"):
-		var p = get_node("/root/Player")
-		if p.has("character_name"):
-			character_name = p.character_name
-		if p.has("level"):
-			level = p.level
-		if p.has("play_time"):
-			playtime = p.play_time
+	if player:
+		character_name = player.character_name
+		level = player.level
 	
 	return {
 		"character_name": character_name,
@@ -97,19 +98,8 @@ func _collect_character_data() -> Dictionary:
 		"rotation": {"x": 0.0, "y": 0.0, "z": 0.0},
 		"current_map": "base_camp",
 		"appearance": {},
-		"stats": {
-			"attack": 10,
-			"defense": 10,
-			"affinity": 0,
-			"elemental_resistances": {
-				"fire": 0,
-				"water": 0,
-				"thunder": 0,
-				"ice": 0,
-				"dragon": 0
-			}
+		"stats": {}
 		}
-	}
 	
 	# Versuche echte Daten vom Spieler zu holen
 	if has_node("/root/Player"):
@@ -265,7 +255,6 @@ func apply_loaded_data(game_data: Dictionary) -> void:
 	_apply_quest_data(game_data.get("quests", {}))
 	_apply_monster_data(game_data.get("monsters", {}))
 	_apply_world_data(game_data.get("world", {}))
-	_apply_settings_data(game_data.get("settings", {}))
 	
 	print("✅ Daten erfolgreich angewendet")
 
@@ -317,13 +306,6 @@ func _apply_world_data(data: Dictionary) -> void:
 		
 		if data.has("current_map"):
 			world.current_map = data["current_map"]
-
-
-func _apply_settings_data(data: Dictionary) -> void:
-	if has_node("/root/Settings"):
-		var settings = get_node("/root/Settings")
-		if settings.has_method("apply_settings"):
-			settings.apply_settings(data)
 
 
 ## ============================================================================

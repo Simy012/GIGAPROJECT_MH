@@ -87,6 +87,7 @@ theme_override_constants/separation = 50
 
 [node name="SelectButton" type="Button" parent="Buttons"]
 layout_mode = 2
+disabled = true
 text = "Select Player"
 
 [node name="CreateButton" type="Button" parent="Buttons"]
@@ -95,6 +96,7 @@ text = "Create new Character"
 
 [node name="DeleteButton" type="Button" parent="Buttons"]
 layout_mode = 2
+disabled = true
 text = "Delete"
 
 [node name="BackButton" type="Button" parent="Buttons"]

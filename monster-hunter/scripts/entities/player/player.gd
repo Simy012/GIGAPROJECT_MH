@@ -5,6 +5,10 @@ class_name Player
 	set(id):
 		player_id = id
 
+var character_name: String = "playername_here"
+var level: int = 1
+
+
 # Components
 @export var movement_component: MovementComponent
 @export var status_component: StatusEffectComponent

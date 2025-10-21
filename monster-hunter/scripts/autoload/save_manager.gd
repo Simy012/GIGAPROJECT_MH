@@ -27,7 +27,7 @@ signal slot_deleted(slot_id: int)
 @export var save_directory: String = "user://saves/"
 @export var save_file_prefix: String = "slot_"
 @export var save_file_extension: String = ".sav"
-@export var max_save_slots: int = 20
+@export var max_save_slots: int = 5
 @export var encryption_enabled: bool = true
 @export var compression_enabled: bool = true
 @export var encryption_password: String = "change_this_password_123"
@@ -157,6 +157,25 @@ func load_game(slot_id: int) -> Dictionary:
 	load_completed.emit(slot_id, game_data)
 	return game_data
 
+
+# Creates a new save and sets the correct curent_slot 
+func create_new_save():
+	var new_slot_id = count_used_slots()
+	if not _is_valid_slot(new_slot_id):
+		print("Error Creating new Character")
+		push_error("Maximum Limit for Saves are reached")
+	current_slot = count_used_slots()
+	save_game(current_slot,DataCollector.collect_all_game_data())
+
+
+func count_used_slots() -> int:
+	var counter = 0
+	var slots = get_all_slots()
+	for slot in slots:
+		if slot["exists"]:
+			counter += 1
+		
+	return counter
 
 ## Löscht einen Save-Slot
 ## @param slot_id: Slot-Nummer

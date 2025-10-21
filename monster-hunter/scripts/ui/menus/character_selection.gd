@@ -8,7 +8,7 @@ class_name CharacterSelection
 @onready var back_button = $Buttons/BackButton
 
 
-var selected_character: Button
+var selected_slot: int = -1
 var characters : Dictionary = {}
 
 
@@ -29,43 +29,35 @@ func load_characters():
 	
 	print("all Characters: ", characters)
 	for character in characters:
-		print("character dict:", character)
-		var char_name = character["character"]["name"]
-		var char_level = character["character"]["level"]
+		print("character dict:", characters[character])
+		var char_name = characters[character]["character"]["name"]
+		var char_level = characters[character]["character"]["level"]
 		print("char_name: ", char_name)
 		print("char_level: ", char_level)
 		_add_character_button("1", char_name, char_level)
 
 
-func _add_character_button(slot_id: String, char_name: String, level: String):
+func _add_character_button(slot_id: String, char_name: String, level: float):
 	var btn = Button.new()
-	btn.text = slot_id + ".  " + char_name + "   LVL: " + level
+	btn.text = slot_id + ".  " + char_name + "   LVL: " + str(level)
 	btn.focus_mode = Control.FOCUS_CLICK
-	btn.connect("pressed", Callable(self, "_on_character_button_pressed").bind(char_name))
+	btn.connect("pressed", Callable(self, "_on_character_button_pressed").bind(slot_id))
+	character_list.add_child(btn)
 
 
-func _on_character_button_pressed(char_name: String):
-	for child in character_list.get_children():
-		if child is Button:
-			child.add_theme_color_override("font_color", Color.WHITE)
-	var btn = character_list.get_node_or_null(char_name)
-	selected_character = btn
-	print("Selected character: ", char_name)
-	_highlight_selected_button(char_name)
+func _on_character_button_pressed(slot_id: int):
+	selected_slot = slot_id
+	select_button.disabled = false
+	delete_button.disabled = false
+	
+	print("Selected slot: ", selected_slot)
 
 
-func _highlight_selected_button(selected: String):
-	for child in character_list.get_children():
-		if child is Button:
-			if child.text == selected:
-				child.add_theme_color_override("font_color", Color.CYAN)
-			else:
-				child.add_theme_color_override("font_color", Color.WHITE)
 
 
 func _on_select_button_pressed():
-	if selected_character:
-		print("Character selected: ", selected_character)
+	if selected_slot != -1:
+		print("Character selected: ", selected_slot)
 		SceneTransition.change_scene(GlobalData.GAME_MODE_SELECTION_SCENE)
 	else:
 		print("Kein Charakter ausgewählt!")
@@ -76,11 +68,14 @@ func _on_create_button_pressed():
 
 
 func _on_delete_button_pressed():
-	if not selected_character:
+	if not selected_slot != -1:
 		print("Kein Charakter zum Löschen ausgewählt.")
 		return
 	
-		SaveManager.delete_slot(int(selected_character.name))
+		SaveManager.delete_slot(selected_slot)
+		selected_slot = -1
+		select_button.disabled = true
+		delete_button.disabled = true
 		load_characters()
 	else:
 		print("Datei existiert nicht.")

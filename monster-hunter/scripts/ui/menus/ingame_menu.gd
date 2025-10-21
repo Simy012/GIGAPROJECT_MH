@@ -23,5 +23,5 @@ func _on_return_button_pressed():
 
 
 func save():
+	print("save")
 	EventHandler.save_game.emit()
-	pass

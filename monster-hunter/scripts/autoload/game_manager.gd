@@ -11,15 +11,16 @@ var is_game_paused: bool = false
 var steam_initialized: bool = false
 
 var players_spawn_node: Node3D
+var local_player: Player = null
 
 
 signal game_mode_changed(mode: GameMode)
 signal steam_ready
 
 func _ready():
+	EventHandler.save_game.connect(save_game)
 	# Steam automatisch initialisieren beim Start
 	initialize_steam()
-	EventHandler.save_game.connect(save_game)
 
 
 func initialize_steam():
@@ -90,16 +91,12 @@ func start_multiplayer_client(lobby_id: int = 0):
 	print("Steam Network: Joined lobby %s!" % lobby_id)
 
 
-func return_to_main_menu():
-	current_game_mode = GameMode.SINGLEPLAYER
-	load_scene(GlobalData.MAIN_MENU_SCENE)
+
 
 func load_scene(scene_path: String):
 	SceneTransition.change_scene(scene_path)
 
-func quit_game():
-	get_tree().quit()
-
+"""
 func pause_game():
 	is_game_paused = true
 	get_tree().paused = true
@@ -107,6 +104,12 @@ func pause_game():
 func resume_game():
 	is_game_paused = false
 	get_tree().paused = false
+"""
+
+func register_local_player(player: Player):
+	local_player = player
+	print("Local player registered:", player.name)
+	EventHandler.local_player_registered.emit(player)
 
 
 func _add_player_to_game(id: int):
@@ -131,6 +134,7 @@ func _del_player(id: int):
 	players_spawn_node.get_node(str(id)).queue_free()
 
 
+
 func save_game():
-	# Hier Datacollector daten bekommen und dann Savemanager save game aufrufen.
-	pass
+	var data = DataCollector.collect_all_game_data()
+	SaveManager.save_game(SaveManager.current_slot, data)
