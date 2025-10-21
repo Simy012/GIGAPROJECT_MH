@@ -9,29 +9,39 @@ class_name CharacterSelection
 
 
 var selected_character: Button
-var characters : Array[Button] = []
+var characters : Dictionary = {}
 
-var character_info : Dictionary = {}
 
 func _ready():
 	load_characters()
 
 
 func load_characters():
-	character_list.queue_free_children()  # Liste leeren
+	
+	for btn in character_list.get_children():
+		btn.queue_free()
 	characters.clear()
 	
-	character_info = SaveManager.get_all_characters()
+	var slots = SaveManager.get_all_slots()
+	for slot in slots:
+		if slot["exists"]:
+			characters[slot["slot_id"]] = SaveManager.load_game(slot["slot_id"])
 	
-	
+	print("all Characters: ", characters)
+	for character in characters:
+		print("character dict:", character)
+		var char_name = character["character"]["name"]
+		var char_level = character["character"]["level"]
+		print("char_name: ", char_name)
+		print("char_level: ", char_level)
+		_add_character_button("1", char_name, char_level)
 
 
-func _add_character_button(char_name: String):
+func _add_character_button(slot_id: String, char_name: String, level: String):
 	var btn = Button.new()
-	btn.text = char_name
+	btn.text = slot_id + ".  " + char_name + "   LVL: " + level
 	btn.focus_mode = Control.FOCUS_CLICK
 	btn.connect("pressed", Callable(self, "_on_character_button_pressed").bind(char_name))
-	character_list.add_child(btn)
 
 
 func _on_character_button_pressed(char_name: String):
@@ -56,7 +66,7 @@ func _highlight_selected_button(selected: String):
 func _on_select_button_pressed():
 	if selected_character:
 		print("Character selected: ", selected_character)
-		SceneTransition.change_scene(GlobalData.GAME_SCENE)
+		SceneTransition.change_scene(GlobalData.GAME_MODE_SELECTION_SCENE)
 	else:
 		print("Kein Charakter ausgewählt!")
 

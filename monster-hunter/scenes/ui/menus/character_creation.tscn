@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbv28newygviw"]
+
+[ext_resource type="Script" uid="uid://b75hcndvrnbgw" path="res://scripts/ui/menus/character_creation.gd" id="1_qqbes"]
+
+[node name="CharacterCreation" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qqbes")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.3647059, 0.5921569, 0.5176471, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.0
+offset_top = 50.0
+offset_right = 67.0
+offset_bottom = 73.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 28
+text = "Character Creation"
+
+[node name="CreateButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 363.0
+offset_top = 510.0
+offset_right = 431.0
+offset_bottom = 541.0
+theme_override_font_sizes/font_size = 20
+text = " Create "
+
+[node name="ReturnButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 720.0
+offset_top = 513.0
+offset_right = 803.0
+offset_bottom = 549.0
+theme_override_font_sizes/font_size = 20
+text = " Return "
+
+[connection signal="pressed" from="CreateButton" to="." method="_on_create_button_pressed"]
+[connection signal="pressed" from="ReturnButton" to="." method="_on_return_button_pressed"]

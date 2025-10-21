@@ -25,13 +25,14 @@ func _ready():
 	if animation_player:
 		animation_player.play("menu_intro")
 
+
 func _on_play_pressed():
 	if SceneTransition.is_transitioning:
 		return
 	play_button_sound()
 	disable_buttons()
 	
-	SceneTransition.change_scene(GlobalData.GAME_MODE_SELECTION_SCENE, 0.4)
+	SceneTransition.change_scene(GlobalData.CHARACTER_SELECTION_SCENE, 0.4)
 
 
 func _on_settings_pressed():

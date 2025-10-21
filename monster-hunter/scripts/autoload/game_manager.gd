@@ -19,6 +19,7 @@ signal steam_ready
 func _ready():
 	# Steam automatisch initialisieren beim Start
 	initialize_steam()
+	EventHandler.save_game.connect(save_game)
 
 
 func initialize_steam():
@@ -121,7 +122,6 @@ func _add_player_to_game(id: int):
 	EventHandler.player_added.emit(player_to_add)
 	print("Player %s spawned successfully!" % id)
 
-
 func _del_player(id: int):
 	if not multiplayer.is_server():
 		return
@@ -129,3 +129,8 @@ func _del_player(id: int):
 	if not players_spawn_node.has_node(str(id)):
 		return
 	players_spawn_node.get_node(str(id)).queue_free()
+
+
+func save_game():
+	# Hier Datacollector daten bekommen und dann Savemanager save game aufrufen.
+	pass

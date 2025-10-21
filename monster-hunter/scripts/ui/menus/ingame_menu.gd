@@ -13,7 +13,7 @@ func _on_save_button_pressed():
 
 
 func _on_settings_button_pressed():
-	# Hier child hinzuifügen mit neuen settnigs und dann escape event abfangen und erstmal nur zum ingame menü zurück
+	# Hier child hinzuifügen mit neuen settnigs und dann escape event abfangen und erstmal nur zum ingame menü zurückS
 	pass # Replace with function body.
 
 
