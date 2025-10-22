@@ -74,7 +74,7 @@ func _collect_metadata() -> Dictionary:
 	
 	if player:
 		character_name = player.character_name
-		level = player.level
+		level = player.get_level()
 	
 	return {
 		"character_name": character_name,
@@ -92,35 +92,18 @@ func _collect_character_data() -> Dictionary:
 		"experience": 0,
 		"health": 100.0,
 		"max_health": 100.0,
-		"stamina": 100.0,
+		"stamina" : 100.0,
 		"max_stamina": 100.0,
-		"position": {"x": 0.0, "y": 0.0, "z": 0.0},
-		"rotation": {"x": 0.0, "y": 0.0, "z": 0.0},
-		"current_map": "base_camp",
 		"appearance": {},
 		"stats": {}
 		}
 	
-	# Versuche echte Daten vom Spieler zu holen
-	if has_node("/root/Player"):
-		var p = get_node("/root/Player")
-		
-		if p.has("character_name"):
-			data["name"] = p.character_name
-		if p.has("level"):
-			data["level"] = p.level
-		if p.has("experience"):
-			data["experience"] = p.experience
-		if p.has("health"):
-			data["health"] = p.health
-		if p.has("max_health"):
-			data["max_health"] = p.max_health
-		if p.has("global_position"):
-			var pos = p.global_position
-			data["position"] = {"x": pos.x, "y": pos.y, "z": pos.z}
-		if p.has("rotation"):
-			var rot = p.rotation
-			data["rotation"] = {"x": rot.x, "y": rot.y, "z": rot.z}
+	if player:
+		data["name"] = player.character_name
+		data["level"] = player.get_level()
+		data["experience"] = player.get_current_experience()
+		data["health"] = player.get_current_health()
+		data["max_health"] = player.get_max_health()
 	
 	return data
 

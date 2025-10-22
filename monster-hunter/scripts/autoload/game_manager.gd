@@ -12,6 +12,7 @@ var steam_initialized: bool = false
 
 var players_spawn_node: Node3D
 var local_player: Player = null
+# var quest_component
 
 
 signal game_mode_changed(mode: GameMode)

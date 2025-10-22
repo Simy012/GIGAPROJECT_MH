@@ -15,6 +15,8 @@ var level: int = 1
 @export var camera_component: Camera3DComponent
 @export var inventory_component: Inventory
 @export var equipment_manager_component: EquipmentManager
+
+@onready var level_component: LevelComponent = $LevelComponent
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var hitbox_component: HitboxComponent = $HitboxComponent
 @onready var player_input = $PlayerInput
@@ -90,6 +92,51 @@ func _unhandled_input(event):
 	
 	if camera_component:
 		camera_component._process_unhandled_input(event)
+
+
+
+###
+### Hilfmethoden für weiterleitung an Components
+###
+
+#
+# Health Component
+#
+
+func get_current_health() -> float:
+	return health_component.get_current_health()
+
+func get_max_health() -> float:
+	return health_component.get_max_health()
+
+func damage(damage: float, force_hide_damage: bool):
+	health_component.damage(damage, force_hide_damage)
+
+func heal(amount: float):
+	health_component.heal(amount)
+
+
+#
+# Level Component
+#
+
+func add_experience(amount: float):
+	level_component.add_experience(amount)
+
+func remove_experience(amount: float):
+	level_component.remove_experience(amount)
+
+func reset_level():
+	level_component.reset_level()
+
+func get_current_experience() -> float:
+	return level_component.get_current_experience()
+
+func get_level_progress() -> float:
+	return level_component.get_level_progress()
+
+func get_level() -> int:
+	return level_component.get_level()
 
 
 # Status Effect Methoden (für Monster Attacks)

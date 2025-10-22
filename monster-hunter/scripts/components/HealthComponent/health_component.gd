@@ -52,6 +52,14 @@ func damage(damage: float, force_hide_damage: bool = false) -> void:
 func heal(heal: float) -> void:
 	damage(-heal,true)
 
+
+func get_current_health() -> float:
+	return _current_health
+
+func get_max_health() -> float:
+	return _max_health
+
+
 func set_max_health(health: float):
 	max_health = health
 
