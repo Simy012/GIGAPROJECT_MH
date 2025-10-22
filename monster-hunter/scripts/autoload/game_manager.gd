@@ -135,6 +135,8 @@ func _del_player(id: int):
 	players_spawn_node.get_node(str(id)).queue_free()
 
 
+func quit_game():
+	get_tree().quit()
 
 func save_game():
 	var data = DataCollector.collect_all_game_data()

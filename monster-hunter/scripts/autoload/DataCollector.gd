@@ -68,17 +68,9 @@ func collect_all_game_data() -> Dictionary:
 
 ## Sammelt Metadaten für die Slot-Anzeige
 func _collect_metadata() -> Dictionary:
-	var character_name = "Unbekannt"
-	var level = 1
 	var playtime = 0.0
 	
-	if player:
-		character_name = player.character_name
-		level = player.get_level()
-	
 	return {
-		"character_name": character_name,
-		"level": level,
 		"play_time": playtime,
 		"save_date": Time.get_datetime_string_from_system()
 	}
@@ -87,7 +79,7 @@ func _collect_metadata() -> Dictionary:
 ## Sammelt Charakter-Daten
 func _collect_character_data() -> Dictionary:
 	var data = {
-		"name": "Jäger",
+		"name": "Unnamed",
 		"level": 1,
 		"experience": 0,
 		"health": 100.0,

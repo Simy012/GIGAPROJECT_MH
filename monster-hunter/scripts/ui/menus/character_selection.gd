@@ -29,18 +29,18 @@ func load_characters():
 	
 	print("all Characters: ", characters)
 	for character in characters:
-		print("character dict:", characters[character])
+		print("character dict:", characters[character]) 
 		var char_name = characters[character]["character"]["name"]
 		var char_level = characters[character]["character"]["level"]
 		print("char_name: ", char_name)
 		print("char_level: ", char_level)
-		_add_character_button("1", char_name, char_level)
+		_add_character_button(int(character), char_name, char_level)
 
 
-func _add_character_button(slot_id: String, char_name: String, level: float):
+func _add_character_button(slot_id: int, char_name: String, level: float):
 	var btn = Button.new()
-	btn.text = slot_id + ".  " + char_name + "   LVL: " + str(level)
-	btn.focus_mode = Control.FOCUS_CLICK
+	btn.text = str(slot_id + 1) + ".  " + char_name + "   LVL: " + str(level)
+	btn.focus_mode = Control.FOCUS_ALL
 	btn.connect("pressed", Callable(self, "_on_character_button_pressed").bind(slot_id))
 	character_list.add_child(btn)
 

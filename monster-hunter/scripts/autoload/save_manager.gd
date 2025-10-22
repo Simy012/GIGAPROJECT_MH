@@ -159,13 +159,15 @@ func load_game(slot_id: int) -> Dictionary:
 
 
 # Creates a new save and sets the correct curent_slot 
-func create_new_save():
+func create_new_save(character_name: String):
 	var new_slot_id = count_used_slots()
 	if not _is_valid_slot(new_slot_id):
 		print("Error Creating new Character")
 		push_error("Maximum Limit for Saves are reached")
 	current_slot = count_used_slots()
-	save_game(current_slot,DataCollector.collect_all_game_data())
+	var data = DataCollector.collect_all_game_data()
+	data["character"]["name"] = character_name
+	save_game(current_slot, data)
 
 
 func count_used_slots() -> int:
