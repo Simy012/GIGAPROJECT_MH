@@ -116,13 +116,11 @@ func _collect_inventory_data() -> Dictionary:
 		}
 	}
 	
-	# Hier überlegen ob man mit ID oder namen speichert
 	if inventory:
 		for itemstack: ItemStack in inventory.items:
 			print(itemstack.item.item_id+ str(itemstack.quantity))
 			data["items"].append({
-				"id" : itemstack.item.item_id,
-				"quantity" : itemstack.quantity
+				itemstack.item.item_id : itemstack.quantity
 				})
 	
 	return data

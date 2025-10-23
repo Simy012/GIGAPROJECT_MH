@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b0c64x0dgua2v"]
+[gd_scene load_steps=8 format=3 uid="uid://b0c64x0dgua2v"]
 
 [ext_resource type="PackedScene" uid="uid://b8luj06lh5dhv" path="res://scenes/environments/nexus/nexus_scene.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://c0200cry40evy" path="res://scripts/main.gd" id="1_tefeu"]
 [ext_resource type="Script" uid="uid://dyrb1nuu4shig" path="res://scripts/ui/ui_handler.gd" id="3_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://e0cgdhgunseo" path="res://scenes/ui/player_HUD/player_hud.tscn" id="4_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://wrviritf6tr1" path="res://scenes/ui/inventory/inventory_gui.tscn" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://clk4hivocvvws" path="res://scenes/ui/menus/ingame_menu.tscn" id="5_tefeu"]
 [ext_resource type="PackedScene" uid="uid://cm1615ixeur85" path="res://scenes/ui/quest/quest_menu.tscn" id="6_tefeu"]
@@ -29,6 +30,8 @@ inventory_gui = NodePath("InventoryGui")
 ingame_menu = NodePath("IngameMenu")
 quest_menu = NodePath("QuestMenu")
 
+[node name="PlayerHUD" parent="UIHandler" instance=ExtResource("4_o6xl0")]
+
 [node name="InventoryGui" parent="UIHandler" instance=ExtResource("5_tbgi4")]
 visible = false
 
@@ -36,6 +39,7 @@ visible = false
 visible = false
 
 [node name="QuestMenu" parent="UIHandler" instance=ExtResource("6_tefeu")]
+visible = false
 
 [connection signal="despawned" from="PlayerSpawner" to="." method="_on_player_despawned"]
 [connection signal="spawned" from="PlayerSpawner" to="." method="_on_player_spawned"]

@@ -7,18 +7,6 @@ signal inventory_changed()
 
 var items: Array[ItemStack] = []
 
-#Für Testdaten
-func _ready():
-	print("Item hinzufügen")
-	var lederhaut: Item = preload("res://resources/items/loot/lederhaut.tres")
-	add_item(lederhaut,13)
-	var zahn: Item = preload("res://resources/items/loot/zahn.tres")
-	add_item(zahn,25)
-	var dual_blades: Item = preload("res://resources/items/weapon/dual_blades.tres")
-	add_item(dual_blades,1)
-	
-	
-
 
 
 func add_item(item: Item, quantity: int = 1) -> bool:
@@ -112,13 +100,26 @@ func get_slot_count() -> int:
 
 
 func load_inventory(inv_data: Dictionary):
-	if inv_data == {}:
-		print("Error loading inventory")
+	if inv_data.is_empty():
+		push_error("Error loading inventory: data empty")
 		return
 	
-	for item_id in inv_data["items"]:
-		var quantity = inv_data["items"]["item_id"]
-		if quantity <= 0:
-			continue
-		var item = ItemDatabase.get_item(item_id)
-		items.append(ItemStack.new(item, quantity))
+	if not inv_data.has("items"):
+		push_error("Error loading inventory: missing 'items'")
+		return
+	
+	# Inventar leeren, bevor du neu befüllst
+	items.clear()
+	
+	for item_entry in inv_data["items"]:
+		for item_id in item_entry.keys():
+			var quantity = item_entry[item_id]
+			if quantity <= 0:
+				continue
+			var item = ItemDatabase.get_item(item_id)
+			if item:
+				items.append(ItemStack.new(item, quantity))
+			else:
+				push_warning("Unknown item ID in save: " + str(item_id))
+	
+	print("Inventory loaded successfully!")

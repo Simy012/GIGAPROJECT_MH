@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://e0cgdhgunseo"]
+
+[ext_resource type="Script" uid="uid://db56o3e2kla36" path="res://scripts/ui/player_hud/player_hud.gd" id="1_e5cvd"]
+[ext_resource type="Script" uid="uid://bc50tdsleg00j" path="res://scripts/ui/player_hud/healthbar.gd" id="2_oyfj3"]
+
+[node name="PlayerHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_e5cvd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Healthbar" type="TextureProgressBar" parent="VBoxContainer"]
+layout_mode = 2
+script = ExtResource("2_oyfj3")
