@@ -11,8 +11,7 @@ gradient = SubResource("Gradient_yao1l")
 
 [resource]
 script = ExtResource("1_yao1l")
-item_id = "2"
-item_name = "Zahn"
+item_id = "zahn"
 description = "Epischer Zahn"
 rarity = 3
 icon = SubResource("GradientTexture2D_ou8wa")

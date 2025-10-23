@@ -22,6 +22,10 @@ func _on_return_button_pressed():
 	SceneTransition.change_scene(GlobalData.MAIN_MENU_SCENE)
 
 
+func _on_quit_button_pressed():
+	save()
+	get_tree().quit()
+
 func save():
 	print("save")
 	EventHandler.save_game.emit()

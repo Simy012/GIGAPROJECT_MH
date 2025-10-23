@@ -164,7 +164,7 @@ func create_new_save(character_name: String):
 	if not _is_valid_slot(new_slot_id):
 		print("Error Creating new Character")
 		push_error("Maximum Limit for Saves are reached")
-	current_slot = count_used_slots()
+	current_slot = new_slot_id
 	var data = DataCollector.collect_all_game_data()
 	data["character"]["name"] = character_name
 	save_game(current_slot, data)
@@ -178,6 +178,16 @@ func count_used_slots() -> int:
 			counter += 1
 		
 	return counter
+
+func get_next_save_slot() -> int:
+	var slot_id = -1
+	
+	var slots = get_all_slots()
+	for slot in slots:
+		if not slot["exists"]:
+			slot_id = slot["slot_id"]
+			break
+	return slot_id
 
 ## Löscht einen Save-Slot
 ## @param slot_id: Slot-Nummer

@@ -18,7 +18,6 @@ enum Rarity {
 }
 
 @export var item_id: String = ""
-@export var item_name: String = ""
 @export_multiline var description: String = ""
 @export var item_type: ItemType = ItemType.RESOURCE
 @export var rarity: Rarity = Rarity.COMMON

@@ -17,7 +17,7 @@ class_name MonsterHunterSaveCollector
 
 ## Referenzen zu Spiel-Systemen (werden automatisch gefunden)
 var player: Player
-var inventory_system: Inventory
+var inventory: Inventory
 var quest_system: Node
 var weapon_system: Node
 var stats_system: Node
@@ -28,6 +28,7 @@ func _ready():
 
 func _on_local_player_registered(loc_player: Player):
 	player = loc_player
+	inventory = player.inventory_component
 
 
 ## ============================================================================
@@ -112,22 +113,17 @@ func _collect_inventory_data() -> Dictionary:
 			"waist_armor": null,
 			"legs_armor": null,
 			"charm": null
-		},
-		"item_pouch": [],
-		"currency": 0,
-		"research_points": 0
+		}
 	}
 	
-	# Versuche Inventar-System zu finden
-	if has_node("/root/InventorySystem"):
-		var inv = get_node("/root/InventorySystem")
-		
-		if inv.has("items"):
-			data["items"] = _duplicate_array(inv.items)
-		if inv.has("equipment"):
-			data["equipment"] = inv.equipment.duplicate(true)
-		if inv.has("currency"):
-			data["currency"] = inv.currency
+	# Hier überlegen ob man mit ID oder namen speichert
+	if inventory:
+		for itemstack: ItemStack in inventory.items:
+			print(itemstack.item.item_id+ str(itemstack.quantity))
+			data["items"].append({
+				"id" : itemstack.item.item_id,
+				"quantity" : itemstack.quantity
+				})
 	
 	return data
 

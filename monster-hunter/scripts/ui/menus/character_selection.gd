@@ -68,17 +68,15 @@ func _on_create_button_pressed():
 
 
 func _on_delete_button_pressed():
-	if not selected_slot != -1:
+	if selected_slot == -1:
 		print("Kein Charakter zum Löschen ausgewählt.")
 		return
 	
-		SaveManager.delete_slot(selected_slot)
-		selected_slot = -1
-		select_button.disabled = true
-		delete_button.disabled = true
-		load_characters()
-	else:
-		print("Datei existiert nicht.")
+	SaveManager.delete_slot(selected_slot)
+	selected_slot = -1
+	select_button.disabled = true
+	delete_button.disabled = true
+	load_characters()
 
 
 func _on_back_button_pressed():

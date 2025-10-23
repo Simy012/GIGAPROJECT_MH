@@ -109,3 +109,16 @@ func get_total_item_count() -> int:
 
 func get_slot_count() -> int:
 	return items.size()
+
+
+func load_inventory(inv_data: Dictionary):
+	if inv_data == {}:
+		print("Error loading inventory")
+		return
+	
+	for item_id in inv_data["items"]:
+		var quantity = inv_data["items"]["item_id"]
+		if quantity <= 0:
+			continue
+		var item = ItemDatabase.get_item(item_id)
+		items.append(ItemStack.new(item, quantity))

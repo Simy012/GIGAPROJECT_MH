@@ -58,7 +58,8 @@ func _setup_local_player():
 	# Input aktivieren
 	if player_input:
 		player_input.enabled = true
-
+	
+	load_data_from_save()
 
 
 func _setup_remote_player():
@@ -92,6 +93,22 @@ func _unhandled_input(event):
 	
 	if camera_component:
 		camera_component._process_unhandled_input(event)
+
+#
+# Lädt alle Daten vom Save und setzt dann entsprechend alle Werte im Player.
+# Diese werden über Multiplayer Synchronizer gesynct 
+func load_data_from_save():
+	var data = SaveManager.load_game(SaveManager.current_slot)
+	if data == {}:
+		print("Error loading user Data")
+	
+	# Player Character:
+	character_name = data["character"]["name"]
+	level = data["character"]["level"]
+	
+	inventory_component.load_inventory(data["inventory"])
+	# TODO load equipment, etc
+
 
 
 
