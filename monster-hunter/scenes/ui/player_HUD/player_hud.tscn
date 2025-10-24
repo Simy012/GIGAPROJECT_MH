@@ -14,9 +14,29 @@ script = ExtResource("1_e5cvd")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 92.0
+offset_bottom = 13.0
 
 [node name="Healthbar" type="TextureProgressBar" parent="VBoxContainer"]
 layout_mode = 2
+value = 50.0
 script = ExtResource("2_oyfj3")
+
+[node name="DamageBar" type="TextureProgressBar" parent="VBoxContainer/Healthbar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StaminaBar" type="TextureProgressBar" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="UsedStaminaBar" type="TextureProgressBar" parent="VBoxContainer/StaminaBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
