@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://tqm78me2ggeg"]
+
+[ext_resource type="Script" uid="uid://bc50tdsleg00j" path="res://scripts/ui/player_hud/statbar.gd" id="1_en0fa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_en0fa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alxqp"]
+bg_color = Color(0.9019608, 0.9490196, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yj8bi"]
+bg_color = Color(0.25202772, 0.2520276, 0.25202766, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eired"]
+bg_color = Color(0.78039217, 0.654902, 0.2, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="StaminaBar" type="ProgressBar"]
+z_index = -1
+offset_right = 256.0
+offset_bottom = 4.0
+theme_override_styles/background = SubResource("StyleBoxEmpty_en0fa")
+theme_override_styles/fill = SubResource("StyleBoxFlat_alxqp")
+value = 60.0
+show_percentage = false
+script = ExtResource("1_en0fa")
+
+[node name="UsedBar" type="ProgressBar" parent="."]
+z_index = -2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_yj8bi")
+theme_override_styles/fill = SubResource("StyleBoxFlat_eired")
+value = 100.0
+show_percentage = false
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

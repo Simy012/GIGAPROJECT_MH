@@ -1,5 +1,7 @@
 extends Node
 
+
+# Player Handling
 signal player_added(player: Player)
 signal player_removed(player: Player)
 signal local_player_registered(player: Player)

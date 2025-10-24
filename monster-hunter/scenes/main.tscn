@@ -24,11 +24,12 @@ _spawnable_scenes = PackedStringArray("uid://dp27wfbklu6ap")
 spawn_path = NodePath("../Players")
 spawn_limit = 4
 
-[node name="UIHandler" type="CanvasLayer" parent="." node_paths=PackedStringArray("inventory_gui", "ingame_menu", "quest_menu")]
+[node name="UIHandler" type="CanvasLayer" parent="." node_paths=PackedStringArray("inventory_gui", "ingame_menu", "quest_menu", "player_hud")]
 script = ExtResource("3_jyhfs")
 inventory_gui = NodePath("InventoryGui")
 ingame_menu = NodePath("IngameMenu")
 quest_menu = NodePath("QuestMenu")
+player_hud = NodePath("PlayerHUD")
 
 [node name="PlayerHUD" parent="UIHandler" instance=ExtResource("4_o6xl0")]
 

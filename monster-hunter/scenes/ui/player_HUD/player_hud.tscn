@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://e0cgdhgunseo"]
+[gd_scene load_steps=4 format=3 uid="uid://e0cgdhgunseo"]
 
 [ext_resource type="Script" uid="uid://db56o3e2kla36" path="res://scripts/ui/player_hud/player_hud.gd" id="1_e5cvd"]
-[ext_resource type="Script" uid="uid://bc50tdsleg00j" path="res://scripts/ui/player_hud/healthbar.gd" id="2_oyfj3"]
+[ext_resource type="PackedScene" uid="uid://dbtqdlfcx6mxt" path="res://scenes/ui/player_HUD/health_bar.tscn" id="2_3qhxf"]
+[ext_resource type="PackedScene" uid="uid://tqm78me2ggeg" path="res://scenes/ui/player_HUD/stamina_bar.tscn" id="2_oyfj3"]
 
 [node name="PlayerHUD" type="Control"]
 layout_mode = 3
@@ -10,33 +11,21 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_e5cvd")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="HealthBar" parent="." instance=ExtResource("2_3qhxf")]
 layout_mode = 0
-offset_right = 92.0
-offset_bottom = 13.0
+offset_left = 20.0
+offset_top = 28.0
+offset_right = 300.0
+offset_bottom = 48.0
+value = 80.0
 
-[node name="Healthbar" type="TextureProgressBar" parent="VBoxContainer"]
-layout_mode = 2
-value = 50.0
-script = ExtResource("2_oyfj3")
-
-[node name="DamageBar" type="TextureProgressBar" parent="VBoxContainer/Healthbar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="StaminaBar" type="TextureProgressBar" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="UsedStaminaBar" type="TextureProgressBar" parent="VBoxContainer/StaminaBar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="StaminaBar" parent="." instance=ExtResource("2_oyfj3")]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 300.0
+offset_bottom = 66.0
+value = 30.0

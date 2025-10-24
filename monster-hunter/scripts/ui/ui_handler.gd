@@ -4,6 +4,7 @@ class_name UIHandler
 @export var inventory_gui: InventoryGUI
 @export var ingame_menu: IngameMenu
 @export var quest_menu: QuestMenu
+@export var player_hud: PlayerHUD
 
 var open_uis: Array[CanvasItem] = []
 
@@ -15,6 +16,7 @@ func _ready() -> void:
 
 
 func _setup_player_ui(player: Player) -> void:
+	player_hud.setup_HUD(player)
 	inventory_gui.inventory = player.inventory_component
 
 
