@@ -8,13 +8,14 @@ func _ready():
 	pass
 
 
-func value_changed(new_value, old_value):
+func change_value(new_value):
+	var _old_value = value
 	value = min(max_value, new_value)
 	
 	if value < 0:
 		value = 0
 	
-	if value < old_value:
+	if value < _old_value:
 		timer.start()
 	else:
 		used_bar.value = value 

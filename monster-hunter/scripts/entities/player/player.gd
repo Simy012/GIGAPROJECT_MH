@@ -10,12 +10,12 @@ var level: int = 1
 
 
 # Components
-@export var movement_component: MovementComponent
 @export var status_component: StatusEffectComponent
 @export var camera_component: Camera3DComponent
-@export var inventory_component: Inventory
 @export var equipment_manager_component: EquipmentManager
 
+@onready var inventory_component: Inventory = $InventoryComponent
+@onready var movement_component: MovementComponent = $MovementComponent
 @onready var level_component: LevelComponent = $LevelComponent
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var hitbox_component: HitboxComponent = $HitboxComponent
@@ -131,6 +131,17 @@ func damage(damage: float, force_hide_damage: bool):
 
 func heal(amount: float):
 	health_component.heal(amount)
+
+
+# 
+# Movement Component
+#
+
+func get_current_stamina() -> float:
+	return movement_component.get_current_stamina()
+
+func get_max_stamina() -> float:
+	return movement_component.get_max_stamina()
 
 
 #
