@@ -86,6 +86,12 @@ func _physics_process(delta):
 		movement_component.move(delta, input_data, camera_basis)
 
 
+# Hier werden Signals gesendet die lokal z.b. für UI wichtig sind
+func _process(delta):
+	if not is_local_player:
+		return
+
+
 
 func _unhandled_input(event):
 	if not is_local_player:

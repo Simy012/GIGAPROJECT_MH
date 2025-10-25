@@ -23,6 +23,7 @@ func _on_player_despawned(player: Player):
 func _on_player_spawned_event(player):
 	player.setup_player()
 	if int(player.name) == get_multiplayer_authority():
+		print("setup ui for player with playerid: ", player.name)
 		ui_handler._setup_player_ui(player)
 		GameManager.register_local_player(player)
 

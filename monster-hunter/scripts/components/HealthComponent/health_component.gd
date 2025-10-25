@@ -26,6 +26,12 @@ var current_health_percentage: float = current_health / max_health if max_health
 	set(new_value):
 		var previous_health = _current_health
 		_current_health = clamp(new_value, 0, max_health)
+		
+		if not multiplayer.is_server():
+			return
+		
+		rpc_update_health.rpc(get_current_health(), get_max_health())
+		"""
 		var health_update : HealthUpdate = HealthUpdate.new()
 		health_update.previous_health = previous_health
 		health_update.current_health = _current_health
@@ -34,12 +40,13 @@ var current_health_percentage: float = current_health / max_health if max_health
 		health_update.is_heal = previous_health <= _current_health
 		
 		emit_signal("health_changed",health_update)
-		
+		"""
 		if !has_health_remaining && !has_died:
 			has_died = true
-			emit_signal("died")
+			rpc_has_died.rpc()
 	get():
 		return _current_health
+
 
 # var currentDamageFloat: TextFloat
 func damage(damage: float, force_hide_damage: bool = false) -> void:
@@ -62,6 +69,30 @@ func get_max_health() -> float:
 
 func set_max_health(health: float):
 	max_health = health
+	rpc_update_health.rpc(get_current_health(), get_max_health())
 
 func initialize_health():
 	current_health = max_health
+
+
+@rpc("call_local", "reliable")
+func rpc_update_health(new_health: float, max_health: float):
+	var previous_health = _current_health
+	_current_health = new_health
+	_max_health = max_health
+	
+	var health_update := HealthUpdate.new()
+	health_update.previous_health = previous_health
+	health_update.current_health = _current_health
+	health_update.max_health = _max_health
+	health_update.health_percentage = _current_health / max_health
+	health_update.is_heal = previous_health < _current_health
+	
+	health_changed.emit(health_update)
+
+
+@rpc("call_local", "reliable")
+func rpc_has_died():
+	has_died = true
+	died.emit()
+	

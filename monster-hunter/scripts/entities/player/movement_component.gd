@@ -2,7 +2,7 @@ extends Node
 class_name MovementComponent
 
 # --- Referenzen ---
-@export var character: CharacterBody3D
+@export var character: Player
 @export var camera_component: Camera3DComponent
 @export var status_component: StatusEffectComponent
 @export var _skin: Node3D
@@ -28,7 +28,7 @@ var knockback_decay: float = 5.0
 @export var stamina_regen_rate: float = 15.0       # pro Sekunde
 @export var sprint_stamina_drain: float = 20.0     # pro Sekunde
 @export var jump_stamina_cost: float = 20.0
-@export var min_stamina_to_sprint: float = 10.0    # Mindestwert zum Starten
+@export var min_stamina_to_sprint: float = 0.0    # Mindestwert zum Starten
 @export var stamina_regen_cooldown: float = 0.8 # Time till stamina regen starts
 var stamina_regen_timer = Timer.new()
 var can_regen_stamina: bool = true
@@ -48,6 +48,7 @@ func _ready():
 func _process(delta):
 	animate_player()
 	_regen_stamina(delta)
+
 
 
 # --- Hauptbewegung ---
@@ -126,22 +127,24 @@ func get_rotation_direction(move_direction: Vector3) -> float:
 
 # --- Stamina Logik ---
 func _drain_stamina(delta: float):
-	stamina = clamp(stamina - sprint_stamina_drain * delta, 0, max_stamina)
 	can_regen_stamina = false
-	emit_signal("stamina_changed", stamina, max_stamina)
 	if stamina <= 0.1:
 		is_sprinting = false
+	var new_stamina = clamp(stamina - sprint_stamina_drain * delta, 0, max_stamina)
+	rpc_stamina_changed.rpc(new_stamina, max_stamina)
 	stamina_regen_timer.start(stamina_regen_cooldown)
 
 func _regen_stamina(delta: float):
 	if is_sprinting or not can_regen_stamina:
 		return
 	if stamina < max_stamina:
-		stamina = min(max_stamina, stamina + stamina_regen_rate * delta)
-		emit_signal("stamina_changed", stamina, max_stamina)
+		var new_stamina = min(max_stamina, stamina + stamina_regen_rate * delta)
+		rpc_stamina_changed.rpc(new_stamina, max_stamina)
 
 func _jump_stamina():
-	stamina = clamp(stamina - jump_stamina_cost, 0, max_stamina)
+	var new_stamina = clamp(stamina - jump_stamina_cost, 0, max_stamina)
+	rpc_stamina_changed.rpc(new_stamina, max_stamina)
+	stamina_regen_timer.start(stamina_regen_cooldown)
 
 func _on_stamina_timer_timeout():
 	can_regen_stamina = true
@@ -151,6 +154,15 @@ func get_current_stamina() -> float:
 
 func get_max_stamina() -> float:
 	return max_stamina
+
+@rpc("call_local", "unreliable")
+func rpc_stamina_changed(current: float, max: float):
+	var last_stamina = stamina
+	var last_max_stamina = max_stamina
+	if last_stamina != current or last_max_stamina != max:
+		stamina = current
+		max_stamina = max
+		stamina_changed.emit(stamina,max_stamina)
 
 
 # --- Utils ---
