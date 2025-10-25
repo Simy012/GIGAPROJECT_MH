@@ -98,7 +98,8 @@ func get_movement_direction(delta: float, input_data: Dictionary, camera_basis: 
 	if "sprint" in input_data and input_data["sprint"] and stamina > min_stamina_to_sprint:
 		is_sprinting = true
 		applying_speed *= sprint_speed
-		_drain_stamina(delta)
+		if horizontal_direction.length() > 0:
+			_drain_stamina(delta)
 	
 	horizontal_direction *= applying_speed
 
@@ -135,7 +136,7 @@ func _drain_stamina(delta: float):
 	stamina_regen_timer.start(stamina_regen_cooldown)
 
 func _regen_stamina(delta: float):
-	if is_sprinting or not can_regen_stamina:
+	if not can_regen_stamina:
 		return
 	if stamina < max_stamina:
 		var new_stamina = min(max_stamina, stamina + stamina_regen_rate * delta)
@@ -144,6 +145,7 @@ func _regen_stamina(delta: float):
 func _jump_stamina():
 	var new_stamina = clamp(stamina - jump_stamina_cost, 0, max_stamina)
 	rpc_stamina_changed.rpc(new_stamina, max_stamina)
+	can_regen_stamina = false
 	stamina_regen_timer.start(stamina_regen_cooldown)
 
 func _on_stamina_timer_timeout():

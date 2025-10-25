@@ -13,6 +13,7 @@ func _ready() -> void:
 	_hide_all_uis()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	EventHandler.close_ingame_menu.connect(_close_ui.bind(ingame_menu))
+	EventHandler.local_player_registered.connect(_setup_player_ui)
 
 
 func _setup_player_ui(player: Player) -> void:

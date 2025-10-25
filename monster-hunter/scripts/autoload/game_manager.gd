@@ -11,7 +11,6 @@ var is_game_paused: bool = false
 var steam_initialized: bool = false
 
 var players_spawn_node: Node3D
-var local_player: Player = null
 # var quest_component
 
 
@@ -106,11 +105,6 @@ func resume_game():
 	is_game_paused = false
 	get_tree().paused = false
 """
-
-func register_local_player(player: Player):
-	local_player = player
-	print("Local player registered:", player.name)
-	EventHandler.local_player_registered.emit(player)
 
 
 func _add_player_to_game(id: int):

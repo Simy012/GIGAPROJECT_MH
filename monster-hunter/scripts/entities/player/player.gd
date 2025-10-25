@@ -60,6 +60,7 @@ func _setup_local_player():
 		player_input.enabled = true
 	
 	load_data_from_save()
+	EventHandler.local_player_registered.emit(self)
 
 
 func _setup_remote_player():
