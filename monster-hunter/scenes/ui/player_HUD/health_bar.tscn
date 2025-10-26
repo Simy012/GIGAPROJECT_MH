@@ -5,7 +5,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_en0fa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_alxqp"]
-bg_color = Color(0.7122464, 0.543105, 0.6307957, 1)
+bg_color = Color(0.93333334, 0.4, 0.50980395, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
