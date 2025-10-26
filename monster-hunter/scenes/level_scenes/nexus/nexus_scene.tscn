@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://b8luj06lh5dhv"]
+[gd_scene load_steps=6 format=3 uid="uid://b8luj06lh5dhv"]
 
+[ext_resource type="Script" uid="uid://btywodtqau73r" path="res://scripts/level_scenes/nexus_scene/nexus_scene.gd" id="1_n8cbb"]
 [ext_resource type="PackedScene" uid="uid://dkasl7jd7vsds" path="res://assets/levels/nexus/nexus_beta.fbx" id="1_pbjg3"]
 [ext_resource type="PackedScene" uid="uid://7ulknriohtp5" path="res://scenes/entities/monsters/gromp/gromp_unfinished.tscn" id="2_wtnbw"]
 
@@ -7,7 +8,10 @@
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_pbjg3"]
 
-[node name="NexusScene" type="Node3D"]
+[node name="NexusScene" type="Node3D" node_paths=PackedStringArray("player_spawn_point")]
+script = ExtResource("1_n8cbb")
+sceneName = &"Nexus"
+player_spawn_point = NodePath("PlayerSpawnPoint")
 
 [node name="nexus_beta" parent="." instance=ExtResource("1_pbjg3")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
@@ -32,3 +36,6 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 10.787228, 1.5484011, 0)
 transform = Transform3D(1, 0, 0, 0, -0.0454327, 0.9989674, 0, -0.9989674, -0.0454327, 0, 37.488743, 0)
 light_energy = 9.06
 spot_range = 62.948
+
+[node name="PlayerSpawnPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.154088, 11.102353)

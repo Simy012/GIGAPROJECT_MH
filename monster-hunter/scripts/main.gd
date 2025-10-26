@@ -1,7 +1,9 @@
 extends Node3D
 
-@onready var players_spawn_point = $Players
+@onready var players_spawn_point = $Players # abändern in level scene
 @export var ui_handler: UIHandler
+
+@onready var level = $Level
 
 
 
@@ -11,6 +13,15 @@ func _ready():
 	EventHandler.player_removed.connect(_on_player_despawned_event)
 	
 	GameManager.players_spawn_node = players_spawn_point
+
+
+
+func load_scene(sceneName: StringName) -> void:
+	
+	pass
+
+
+
 
 
 func _on_player_spawned(player: Player):

@@ -20,3 +20,7 @@ var multiplayer_scene = preload("res://scenes/entities/player/player.tscn")
 # Network Scenes
 var enet_network_scene := preload("res://scenes/multiplayer/networks/enet_network.tscn")
 var steam_network_scene := preload("res://scenes/multiplayer/networks/steam_network.tscn")
+
+
+# Level Scenes
+var nexus_scene = preload("uid://b8luj06lh5dhv")
