@@ -10,7 +10,7 @@
 
 [node name="NexusScene" type="Node3D" node_paths=PackedStringArray("player_spawn_point")]
 script = ExtResource("1_n8cbb")
-sceneName = &"Nexus"
+scene_name = &"Nexus"
 player_spawn_point = NodePath("PlayerSpawnPoint")
 
 [node name="nexus_beta" parent="." instance=ExtResource("1_pbjg3")]
@@ -39,3 +39,7 @@ spot_range = 62.948
 
 [node name="PlayerSpawnPoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.154088, 11.102353)
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://dp27wfbklu6ap")
+spawn_path = NodePath("../PlayerSpawnPoint")

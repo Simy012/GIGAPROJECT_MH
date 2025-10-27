@@ -1,9 +1,9 @@
 extends Node3D
+class_name MainNode
 
-@onready var players_spawn_point = $Players # abändern in level scene
 @export var ui_handler: UIHandler
 
-@onready var level = $Level
+@onready var scene_manager: SceneManager= $SceneManager
 
 
 
@@ -12,16 +12,17 @@ func _ready():
 	EventHandler.player_added.connect(_on_player_spawned_event)
 	EventHandler.player_removed.connect(_on_player_despawned_event)
 	
-	GameManager.players_spawn_node = players_spawn_point
-
-
-
-func load_scene(sceneName: StringName) -> void:
+	GameManager.main_node = self
 	
-	pass
+	load_scene(GlobalData.LEVEL.NEXUS)
 
 
+func load_scene(level_name: GlobalData.LEVEL) -> void:
+	scene_manager.load_scene(level_name)
 
+
+func get_player_spawn_point() -> Node3D:
+	return scene_manager.get_player_spawn_point()
 
 
 func _on_player_spawned(player: Player):

@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://b0c64x0dgua2v"]
 
-[ext_resource type="PackedScene" uid="uid://b8luj06lh5dhv" path="res://scenes/level_scenes/nexus/nexus_scene.tscn" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://c0200cry40evy" path="res://scripts/main.gd" id="1_tefeu"]
+[ext_resource type="Script" uid="uid://b8m0jdhjac50m" path="res://scripts/level_scenes/scene_manager.gd" id="2_choun"]
 [ext_resource type="Script" uid="uid://dyrb1nuu4shig" path="res://scripts/ui/ui_handler.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://e0cgdhgunseo" path="res://scenes/ui/player_HUD/player_hud.tscn" id="4_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://wrviritf6tr1" path="res://scenes/ui/inventory/inventory_gui.tscn" id="5_tbgi4"]
@@ -14,17 +14,8 @@
 script = ExtResource("1_tefeu")
 ui_handler = NodePath("UIHandler")
 
-[node name="Level" type="Node" parent="."]
-
-[node name="NexusScene" parent="Level" instance=ExtResource("1_o5qli")]
-
-[node name="Players" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.290741, 5.386944, 10.645484)
-
-[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://dp27wfbklu6ap")
-spawn_path = NodePath("../Players")
-spawn_limit = 4
+[node name="SceneManager" type="Node" parent="."]
+script = ExtResource("2_choun")
 
 [node name="UIHandler" type="CanvasLayer" parent="." node_paths=PackedStringArray("inventory_gui", "ingame_menu", "quest_menu", "player_hud")]
 script = ExtResource("3_jyhfs")
@@ -46,6 +37,3 @@ visible = false
 
 [node name="HuntingMenu" parent="UIHandler" instance=ExtResource("8_85g3d")]
 script = ExtResource("9_choun")
-
-[connection signal="despawned" from="PlayerSpawner" to="." method="_on_player_despawned"]
-[connection signal="spawned" from="PlayerSpawner" to="." method="_on_player_spawned"]

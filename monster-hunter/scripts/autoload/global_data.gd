@@ -22,5 +22,20 @@ var enet_network_scene := preload("res://scenes/multiplayer/networks/enet_networ
 var steam_network_scene := preload("res://scenes/multiplayer/networks/steam_network.tscn")
 
 
-# Level Scenes
-var nexus_scene = preload("uid://b8luj06lh5dhv")
+# Enum für alle Level-Namen
+enum LEVEL {
+	NEXUS,
+}
+
+# Hier werden alle Level-Szenen zentral geladen
+const LEVEL_SCENES := {
+	LEVEL.NEXUS: preload("res://scenes/level_scenes/nexus/nexus_scene.tscn")
+}
+
+# Optional: Wenn du nur instanzieren willst
+func get_level_instance(level: LEVEL) -> Scene:
+	var scene = LEVEL_SCENES.get(level)
+	if scene:
+		return scene.instantiate()
+	push_error("Level not found: %s" % str(level))
+	return null

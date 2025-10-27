@@ -10,8 +10,7 @@ var current_game_mode: GameMode = GameMode.SINGLEPLAYER
 var is_game_paused: bool = false
 var steam_initialized: bool = false
 
-var players_spawn_node: Node3D
-# var quest_component
+var main_node:  MainNode
 
 
 signal game_mode_changed(mode: GameMode)
@@ -116,7 +115,11 @@ func _add_player_to_game(id: int):
 	player_to_add.player_id = id
 	player_to_add.name = str(id)
 	
-	players_spawn_node.add_child(player_to_add, true)
+	if not main_node.get_player_spawn_point():
+		print("ERROR: Spawnnode war null, als Spieler hinzugefügt werden sollte")
+		return
+	
+	main_node.get_player_spawn_point().add_child(player_to_add, true)
 	EventHandler.player_added.emit(player_to_add)
 	print("Player %s spawned successfully!" % id)
 
@@ -124,9 +127,9 @@ func _del_player(id: int):
 	if not multiplayer.is_server():
 		return
 	print("Player %s left the game!" % id)
-	if not players_spawn_node.has_node(str(id)):
+	if not main_node.get_player_spawn_point().has_node(str(id)):
 		return
-	players_spawn_node.get_node(str(id)).queue_free()
+	main_node.get_player_spawn_point().get_node(str(id)).call_deferred("queue_free")
 
 
 func quit_game():
