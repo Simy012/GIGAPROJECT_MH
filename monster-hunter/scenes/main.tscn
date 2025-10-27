@@ -17,12 +17,13 @@ ui_handler = NodePath("UIHandler")
 [node name="SceneManager" type="Node" parent="."]
 script = ExtResource("2_choun")
 
-[node name="UIHandler" type="CanvasLayer" parent="." node_paths=PackedStringArray("inventory_gui", "ingame_menu", "quest_menu", "player_hud")]
+[node name="UIHandler" type="CanvasLayer" parent="." node_paths=PackedStringArray("inventory_gui", "ingame_menu", "quest_menu", "player_hud", "hunting_menu")]
 script = ExtResource("3_jyhfs")
 inventory_gui = NodePath("InventoryGui")
 ingame_menu = NodePath("IngameMenu")
 quest_menu = NodePath("QuestMenu")
 player_hud = NodePath("PlayerHUD")
+hunting_menu = NodePath("HuntingMenu")
 
 [node name="PlayerHUD" parent="UIHandler" instance=ExtResource("4_o6xl0")]
 
@@ -36,4 +37,5 @@ visible = false
 visible = false
 
 [node name="HuntingMenu" parent="UIHandler" instance=ExtResource("8_85g3d")]
+visible = false
 script = ExtResource("9_choun")

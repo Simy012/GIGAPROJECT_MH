@@ -25,11 +25,13 @@ var steam_network_scene := preload("res://scenes/multiplayer/networks/steam_netw
 # Enum für alle Level-Namen
 enum LEVEL {
 	NEXUS,
+	HUNTINGGROUND1
 }
 
 # Hier werden alle Level-Szenen zentral geladen
 const LEVEL_SCENES := {
-	LEVEL.NEXUS: preload("res://scenes/level_scenes/nexus/nexus_scene.tscn")
+	LEVEL.NEXUS: preload("res://scenes/level_scenes/nexus/nexus_scene.tscn"),
+	LEVEL.HUNTINGGROUND1: preload("res://scenes/level_scenes/hunting_grounds/hunting_ground_1.tscn")
 }
 
 # Optional: Wenn du nur instanzieren willst

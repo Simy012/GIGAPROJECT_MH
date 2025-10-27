@@ -5,6 +5,7 @@ class_name UIHandler
 @export var ingame_menu: IngameMenu
 @export var quest_menu: QuestMenu
 @export var player_hud: PlayerHUD
+@export var hunting_menu: HuntingMenu
 
 var open_uis: Array[CanvasItem] = []
 
@@ -34,6 +35,8 @@ func _input(event: InputEvent) -> void:
 		_toggle_exclusive_ui(quest_menu)
 	elif event.is_action_pressed("toggle_ingame_menu"):
 		_handle_ingame_menu_toggle()
+	elif event.is_action_pressed("toggle_hunting_menu"):
+		_toggle_exclusive_ui(hunting_menu)
 	elif event.is_action_pressed("left_click"):
 		if open_uis.is_empty():
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
