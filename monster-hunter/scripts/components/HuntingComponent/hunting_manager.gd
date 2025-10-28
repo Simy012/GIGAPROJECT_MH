@@ -38,6 +38,7 @@ func select_mission(mission: HuntingMission) -> void:
 		cancel_mission()
 	
 	current_mission = mission
+	print("Mission ausgewählt: ", current_mission.name)
 	timer_to_start.start(WAIT_TIME)
 
 
@@ -46,7 +47,8 @@ func start_mission() -> void:
 		return
 	if not current_mission:
 		return
-		
+	
+	print("Start Mission: ", current_mission.name)
 	mission_started.emit(current_mission)
 	timer_to_complete.start(DURATION_TIME * 60)
 
@@ -81,6 +83,7 @@ func complete_mission() -> void:
 	if not multiplayer.is_server():
 		return
 	if current_mission:
+		print("Mission Completed")
 		mission_completed.emit(current_mission)
 		current_mission = null
 
