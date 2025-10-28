@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://50r242wsccc7"]
+
+[ext_resource type="Script" uid="uid://uakluci8fiyt" path="res://scripts/ui/menus/hunting_menu/mission_button.gd" id="1_c5e57"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5e57"]
+bg_color = Color(0.16934028, 0.65516216, 0.8312453, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vhsdp"]
+bg_color = Color(0.77254903, 0.8509804, 0.14509805, 1)
+
+[node name="MissionButton" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_c5e57")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vhsdp")
+toggle_mode = true
+text = "Hunt_name      1"
+script = ExtResource("1_c5e57")

@@ -12,12 +12,16 @@ var steam_initialized: bool = false
 
 var main_node:  MainNode
 
+var players: Array[Player] = []
 
 signal game_mode_changed(mode: GameMode)
 signal steam_ready
 
 func _ready():
+	players = []
 	EventHandler.save_game.connect(save_game)
+	HuntingManager.mission_started.connect(_on_mission_started)
+	
 	# Steam automatisch initialisieren beim Start
 	initialize_steam()
 
@@ -119,6 +123,7 @@ func _add_player_to_game(id: int):
 		print("ERROR: Spawnnode war null, als Spieler hinzugefügt werden sollte")
 		return
 	
+	players.append(player_to_add)
 	main_node.get_player_spawn_point().add_child(player_to_add, true)
 	EventHandler.player_added.emit(player_to_add)
 	print("Player %s spawned successfully!" % id)
@@ -129,7 +134,10 @@ func _del_player(id: int):
 	print("Player %s left the game!" % id)
 	if not main_node.get_player_spawn_point().has_node(str(id)):
 		return
-	main_node.get_player_spawn_point().get_node(str(id)).call_deferred("queue_free")
+	
+	var player_to_remove: Player = main_node.get_player_spawn_point().get_node(str(id))
+	players.erase(player_to_remove)
+	player_to_remove.call_deferred("queue_free")
 
 
 func quit_game():
@@ -138,3 +146,12 @@ func quit_game():
 func save_game():
 	var data = DataCollector.collect_all_game_data()
 	SaveManager.save_game(SaveManager.current_slot, data)
+
+
+func _on_mission_started(mission: HuntingMission):
+	# Hier vielleicht Animation zur Jagd abspielen
+	main_node.load_scene(mission.hunting_ground)
+	
+	for player in players:
+		main_node.get_player_spawn_point().add_child(player)
+	pass

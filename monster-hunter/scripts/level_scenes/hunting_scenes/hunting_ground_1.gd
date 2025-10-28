@@ -1,4 +1,4 @@
-extends Scene
+extends HuntingGround
 
 
 func load_scene() -> void:

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="HuntingMission" load_steps=5 format=3 uid="uid://crvc1v5g3fswd"]
+
+[ext_resource type="Script" uid="uid://bor1r5egex06n" path="res://scripts/components/HuntingComponent/hunting_mission.gd" id="1_8k228"]
+[ext_resource type="PackedScene" uid="uid://7ulknriohtp5" path="res://scenes/entities/monsters/gromp/gromp_unfinished.tscn" id="1_u5yip"]
+
+[sub_resource type="Gradient" id="Gradient_u5yip"]
+colors = PackedColorArray(0.55922616, 0.20066196, 0.07266287, 1, 0.7176471, 0.40392157, 0.29803923, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1rh7n"]
+gradient = SubResource("Gradient_u5yip")
+
+[resource]
+script = ExtResource("1_8k228")
+name = &"Hunt1  Buddler"
+description = "A wild Buddler was seen in the woods, attacking people. Step in to save them!"
+monster_scene = ExtResource("1_u5yip")
+hunting_ground = 1
+icon = SubResource("GradientTexture1D_1rh7n")
+metadata/_custom_type_script = "uid://bor1r5egex06n"

@@ -6,10 +6,11 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_v0my8"]
 
-[node name="HuntingGround1" type="Node3D" node_paths=PackedStringArray("player_spawn_point")]
+[node name="HuntingGround1" type="Node3D" node_paths=PackedStringArray("player_spawn_point", "multiplayer_spawner")]
 script = ExtResource("1_muwtc")
 scene_name = &"Huntingground1"
 player_spawn_point = NodePath("PlayerSpawnPoint")
+multiplayer_spawner = NodePath("MultiplayerSpawner")
 
 [node name="PlayerSpawnPoint" type="Node3D" parent="."]
 

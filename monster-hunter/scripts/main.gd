@@ -5,9 +5,7 @@ class_name MainNode
 
 @onready var scene_manager: SceneManager= $SceneManager
 
-
-
-
+# ich muss
 func _ready():
 	EventHandler.player_added.connect(_on_player_spawned_event)
 	EventHandler.player_removed.connect(_on_player_despawned_event)
@@ -23,14 +21,6 @@ func load_scene(level_name: GlobalData.LEVEL) -> void:
 
 func get_player_spawn_point() -> Node3D:
 	return scene_manager.get_player_spawn_point()
-
-
-func _on_player_spawned(player: Player):
-	EventHandler.player_added.emit(player)
-
-
-func _on_player_despawned(player: Player):
-	EventHandler.player_removed.emit(player)
 
 func _on_player_spawned_event(player: Player):
 	player.setup_player()

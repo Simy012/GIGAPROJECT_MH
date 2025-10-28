@@ -17,7 +17,6 @@ func _ready():
 
 
 func load_characters():
-	
 	for btn in character_list.get_children():
 		btn.queue_free()
 	characters.clear()
@@ -46,6 +45,9 @@ func _add_character_button(slot_id: int, char_name: String, level: float):
 
 
 func _on_character_button_pressed(slot_id: int):
+	if selected_slot == slot_id:
+		_on_select_button_pressed()
+		return
 	selected_slot = slot_id
 	select_button.disabled = false
 	delete_button.disabled = false
