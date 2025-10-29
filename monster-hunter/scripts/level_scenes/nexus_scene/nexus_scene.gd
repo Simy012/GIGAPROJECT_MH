@@ -3,9 +3,8 @@ extends Scene
 
 func load_scene() -> void:
 	print("Lade Szene: ", scene_name)
-	pass
 
 
 func unload_scene() -> void:
+	super.unload_scene()
 	print("Entlade Szene: ", scene_name)
-	pass

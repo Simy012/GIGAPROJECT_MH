@@ -10,7 +10,7 @@ var current_mission: HuntingMission
 var hunting_catalog: HuntingCatalog = preload("res://resources/hunting/hunting_catalog.tres")
 
 var timer_to_start: Timer # Timer bis Mission nach dem auswählen startet
-const WAIT_TIME: float = 15.0 # in Sekunden angeben
+const WAIT_TIME: float = 5.0 # in Sekunden angeben
 
 var timer_to_complete: Timer # Timer bis Mission nach dem Start beendet werden muss, ansonsten fail
 const DURATION_TIME: float = 0.50 # in Minuten angeben

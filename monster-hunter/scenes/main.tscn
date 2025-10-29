@@ -16,6 +16,10 @@ ui_handler = NodePath("UIHandler")
 [node name="SceneManager" type="Node" parent="."]
 script = ExtResource("2_choun")
 
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://b8luj06lh5dhv", "uid://c6x200ch2b7tr")
+spawn_path = NodePath("../SceneManager")
+
 [node name="UIHandler" type="CanvasLayer" parent="." node_paths=PackedStringArray("inventory_gui", "ingame_menu", "quest_menu", "player_hud", "hunting_menu")]
 script = ExtResource("3_jyhfs")
 inventory_gui = NodePath("InventoryGui")

@@ -23,5 +23,7 @@ func _on_player_despawned(player: Player):
 @abstract
 func load_scene() -> void
 
-@abstract
-func unload_scene() -> void
+
+func unload_scene() -> void:
+	for player in player_spawn_point.get_children():
+		player_spawn_point.remove_child(player)

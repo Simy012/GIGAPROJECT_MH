@@ -152,6 +152,9 @@ func _on_mission_started(mission: HuntingMission):
 	# Hier vielleicht Animation zur Jagd abspielen
 	main_node.load_scene(mission.hunting_ground)
 	
+	await main_node.scene_manager.scene_loaded
+	
+	
 	for player in players:
 		main_node.get_player_spawn_point().add_child(player)
 	pass

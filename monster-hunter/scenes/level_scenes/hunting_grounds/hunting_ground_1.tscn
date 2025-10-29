@@ -13,6 +13,7 @@ player_spawn_point = NodePath("PlayerSpawnPoint")
 multiplayer_spawner = NodePath("MultiplayerSpawner")
 
 [node name="PlayerSpawnPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.651823, 0)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://dp27wfbklu6ap")
